@@ -462,7 +462,14 @@ fn create_model_from_config(provider: &ProviderType, model_id: &str) -> Box<dyn 
     let result: Box<dyn LlmModel> = match provider {
         ProviderType::Bedrock => {
             match model_id {
-                // Claude 4.5 models (recommended)
+                // Claude 4.6 / 4.8 models (latest, recommended)
+                "us.anthropic.claude-opus-4-8" => {
+                    Box::new(crate::llm::models::Bedrock::ClaudeOpus48)
+                }
+                "us.anthropic.claude-sonnet-4-6" => {
+                    Box::new(crate::llm::models::Bedrock::ClaudeSonnet46)
+                }
+                // Claude 4.5 models
                 "us.anthropic.claude-sonnet-4-5-20250929-v1:0" => {
                     Box::new(crate::llm::models::Bedrock::ClaudeSonnet45)
                 }

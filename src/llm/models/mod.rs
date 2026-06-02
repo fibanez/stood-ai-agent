@@ -14,7 +14,23 @@ pub mod Bedrock {
     use super::*;
 
     // ============================================================================
-    // Claude 4.5 Models (Current - Recommended)
+    // Claude 4.6 / 4.8 Models (Latest - Recommended)
+    // ============================================================================
+
+    /// Claude Sonnet 4.6 via AWS Bedrock - balanced performance model
+    ///
+    /// The smartest Sonnet model for complex agents and coding tasks.
+    #[derive(Debug, Clone, Copy)]
+    pub struct ClaudeSonnet46;
+
+    /// Claude Opus 4.8 via AWS Bedrock - premium model
+    ///
+    /// Combines maximum intelligence with practical performance.
+    #[derive(Debug, Clone, Copy)]
+    pub struct ClaudeOpus48;
+
+    // ============================================================================
+    // Claude 4.5 Models (Current)
     // ============================================================================
 
     /// Claude Sonnet 4.5 via AWS Bedrock - balanced performance model
@@ -42,11 +58,11 @@ pub mod Bedrock {
     // Model Aliases - Use these for automatic upgrades to latest versions
     // ============================================================================
 
-    /// Alias for the latest Claude Sonnet model (currently 4.5)
+    /// Alias for the latest Claude Sonnet model (currently 4.6)
     ///
     /// Using this alias ensures your application automatically uses the latest
     /// Sonnet model when upgrading the Stood library.
-    pub type SonnetLatest = ClaudeSonnet45;
+    pub type SonnetLatest = ClaudeSonnet46;
 
     /// Alias for the latest Claude Haiku model (currently 4.5)
     ///
@@ -54,11 +70,11 @@ pub mod Bedrock {
     /// Haiku model when upgrading the Stood library.
     pub type HaikuLatest = ClaudeHaiku45;
 
-    /// Alias for the latest Claude Opus model (currently 4.5)
+    /// Alias for the latest Claude Opus model (currently 4.8)
     ///
     /// Using this alias ensures your application automatically uses the latest
     /// Opus model when upgrading the Stood library.
-    pub type OpusLatest = ClaudeOpus45;
+    pub type OpusLatest = ClaudeOpus48;
 
     // ============================================================================
     // Legacy Claude Models (Deprecated)
@@ -160,6 +176,80 @@ pub mod Bedrock {
     pub struct Nova2Pro;
 
     // Implement LlmModel trait for all Bedrock models
+
+    // ============================================================================
+    // Claude 4.6 / 4.8 Model Implementations
+    // ============================================================================
+
+    impl LlmModel for ClaudeSonnet46 {
+        fn model_id(&self) -> &'static str {
+            // Note: us. prefix required for cross-region inference in AWS Bedrock
+            "us.anthropic.claude-sonnet-4-6"
+        }
+        fn provider(&self) -> ProviderType {
+            ProviderType::Bedrock
+        }
+        fn context_window(&self) -> usize {
+            200_000
+        }
+        fn max_output_tokens(&self) -> usize {
+            8_192
+        }
+        fn capabilities(&self) -> ModelCapabilities {
+            ModelCapabilities {
+                max_tokens: Some(8_192),
+                supports_tools: true,
+                supports_streaming: true,
+                supports_thinking: true,
+                supports_vision: true,
+                context_window: Some(200_000),
+            }
+        }
+        fn display_name(&self) -> &'static str {
+            "Claude Sonnet 4.6"
+        }
+        fn default_temperature(&self) -> f32 {
+            0.7
+        }
+        fn default_max_tokens(&self) -> u32 {
+            8_192
+        }
+    }
+
+    impl LlmModel for ClaudeOpus48 {
+        fn model_id(&self) -> &'static str {
+            // Note: us. prefix required for cross-region inference in AWS Bedrock
+            "us.anthropic.claude-opus-4-8"
+        }
+        fn provider(&self) -> ProviderType {
+            ProviderType::Bedrock
+        }
+        fn context_window(&self) -> usize {
+            200_000
+        }
+        fn max_output_tokens(&self) -> usize {
+            8_192
+        }
+        fn capabilities(&self) -> ModelCapabilities {
+            ModelCapabilities {
+                max_tokens: Some(8_192),
+                supports_tools: true,
+                supports_streaming: true,
+                supports_thinking: true,
+                supports_vision: true,
+                context_window: Some(200_000),
+            }
+        }
+        fn display_name(&self) -> &'static str {
+            "Claude Opus 4.8"
+        }
+        fn default_temperature(&self) -> f32 {
+            0.6
+        }
+        fn default_max_tokens(&self) -> u32 {
+            8_192
+        }
+    }
 
     // ============================================================================
     // Claude 4.5 Model Implementations
@@ -907,7 +997,23 @@ pub mod Anthropic {
     use super::*;
 
     // ============================================================================
-    // Claude 4.5 Models (Current - Recommended)
+    // Claude 4.6 / 4.8 Models (Latest - Recommended)
+    // ============================================================================
+
+    /// Claude Sonnet 4.6 via Anthropic Direct API - balanced performance model
+    ///
+    /// The smartest Sonnet model for complex agents and coding tasks.
+    #[derive(Debug, Clone, Copy)]
+    pub struct ClaudeSonnet46;
+
+    /// Claude Opus 4.8 via Anthropic Direct API - premium model
+    ///
+    /// Combines maximum intelligence with practical performance.
+    #[derive(Debug, Clone, Copy)]
+    pub struct ClaudeOpus48;
+
+    // ============================================================================
+    // Claude 4.5 Models (Current)
     // ============================================================================
 
     /// Claude Sonnet 4.5 via Anthropic Direct API - balanced performance model
@@ -958,6 +1064,78 @@ pub mod Anthropic {
     )]
     #[derive(Debug, Clone, Copy)]
     pub struct Claude3Opus;
+
+    // ============================================================================
+    // Claude 4.6 / 4.8 Model Implementations
+    // ============================================================================
+
+    impl LlmModel for ClaudeSonnet46 {
+        fn model_id(&self) -> &'static str {
+            "claude-sonnet-4-6"
+        }
+        fn provider(&self) -> ProviderType {
+            ProviderType::Anthropic
+        }
+        fn context_window(&self) -> usize {
+            200_000
+        }
+        fn max_output_tokens(&self) -> usize {
+            8_192
+        }
+        fn capabilities(&self) -> ModelCapabilities {
+            ModelCapabilities {
+                max_tokens: Some(8_192),
+                supports_tools: true,
+                supports_streaming: true,
+                supports_thinking: true,
+                supports_vision: true,
+                context_window: Some(200_000),
+            }
+        }
+        fn display_name(&self) -> &'static str {
+            "Claude Sonnet 4.6 (Direct)"
+        }
+        fn default_temperature(&self) -> f32 {
+            0.7
+        }
+        fn default_max_tokens(&self) -> u32 {
+            8_192
+        }
+    }
+
+    impl LlmModel for ClaudeOpus48 {
+        fn model_id(&self) -> &'static str {
+            "claude-opus-4-8"
+        }
+        fn provider(&self) -> ProviderType {
+            ProviderType::Anthropic
+        }
+        fn context_window(&self) -> usize {
+            200_000
+        }
+        fn max_output_tokens(&self) -> usize {
+            8_192
+        }
+        fn capabilities(&self) -> ModelCapabilities {
+            ModelCapabilities {
+                max_tokens: Some(8_192),
+                supports_tools: true,
+                supports_streaming: true,
+                supports_thinking: true,
+                supports_vision: true,
+                context_window: Some(200_000),
+            }
+        }
+        fn display_name(&self) -> &'static str {
+            "Claude Opus 4.8 (Direct)"
+        }
+        fn default_temperature(&self) -> f32 {
+            0.6
+        }
+        fn default_max_tokens(&self) -> u32 {
+            8_192
+        }
+    }
 
     // ============================================================================
     // Claude 4.5 Model Implementations
@@ -1178,7 +1356,12 @@ pub mod Anthropic {
 // Provider modules are available as: use stood::llm::models::Bedrock::ClaudeHaiku45;
 // or via the top-level re-export: use stood::llm::{Bedrock, LMStudio, Anthropic};
 //
-// Recommended models (Claude 4.5):
+// Recommended models (latest):
 //   - Bedrock::ClaudeHaiku45  - Fastest, cost-effective
-//   - Bedrock::ClaudeSonnet45 - Balanced performance
-//   - Bedrock::ClaudeOpus45   - Maximum intelligence
+//   - Bedrock::ClaudeSonnet46 - Balanced performance
+//   - Bedrock::ClaudeOpus48   - Maximum intelligence
+//
+// Or use the auto-upgrading aliases:
+//   - Bedrock::HaikuLatest  (currently ClaudeHaiku45)
+//   - Bedrock::SonnetLatest (currently ClaudeSonnet46)
+//   - Bedrock::OpusLatest   (currently ClaudeOpus48)
