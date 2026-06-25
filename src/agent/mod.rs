@@ -499,7 +499,9 @@ fn create_model_from_config(provider: &ProviderType, model_id: &str) -> Box<dyn 
                 // Nova 2 models (current generation)
                 "us.amazon.nova-2-lite-v1:0" => Box::new(crate::llm::models::Bedrock::Nova2Lite),
                 "us.amazon.nova-2-pro-v1:0" => Box::new(crate::llm::models::Bedrock::Nova2Pro),
-                "us.amazon.nova-premier-v1:0" => Box::new(crate::llm::models::Bedrock::NovaPremier),
+                "us.amazon.nova-premier-v1:0" | "amazon.nova-premier-v1:0" => {
+                    Box::new(crate::llm::models::Bedrock::NovaPremier)
+                }
                 _ => Box::new(crate::llm::models::Bedrock::ClaudeHaiku45), // Default fallback
             }
         }
