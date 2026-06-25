@@ -197,6 +197,7 @@ mod llm_integration_test;
 ///     agent_name: None,
 ///     telemetry_config: None,
 ///     retry_config: None,
+///     ..AgentConfig::default()
 /// };
 /// ```
 ///
@@ -224,6 +225,14 @@ pub struct AgentConfig {
     pub agent_name: Option<String>,
     /// Prompt caching strategy for reducing latency and costs
     pub cache_strategy: CacheStrategy,
+    /// How the LLM should choose which tools to use
+    ///
+    /// Controls tool-selection behavior sent to the provider:
+    /// - `ToolChoice::Auto` (default) — the model may or may not call a tool
+    /// - `ToolChoice::Any` — the model must call at least one tool
+    /// - `ToolChoice::Tool { name }` — the model must call the named tool
+    /// - `ToolChoice::None` — no tools are sent; the model cannot call any tool
+    pub tool_choice: crate::types::tools::ToolChoice,
 
     pub telemetry_config: Option<TelemetryConfig>,
     pub retry_config: Option<RetryConfig>,
@@ -318,6 +327,7 @@ impl Default for AgentConfig {
             agent_id: None,
             agent_name: None,
             cache_strategy: CacheStrategy::default(),
+            tool_choice: crate::types::tools::ToolChoice::Auto,
 
             telemetry_config: None,
             retry_config: None,
@@ -1266,6 +1276,85 @@ impl AgentBuilder {
     /// Add multiple tools to the agent
     pub fn tools(mut self, mut tools: Vec<Box<dyn Tool>>) -> Self {
         self.tools.append(&mut tools);
+        self
+    }
+
+    /// Set the tool choice strategy for the agent.
+    ///
+    /// Controls how the LLM selects tools during execution.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use stood::agent::Agent;
+    /// use stood::llm::models::Bedrock;
+    /// use stood::types::tools::ToolChoice;
+    ///
+    /// # tokio_test::block_on(async {
+    /// // Force the model to use at least one tool
+    /// let agent = Agent::builder()
+    ///     .model(Bedrock::ClaudeHaiku45)
+    ///     .tool_choice(ToolChoice::Any)
+    ///     .build()
+    ///     .await
+    ///     .unwrap();
+    /// # });
+    /// ```
+    pub fn tool_choice(mut self, tool_choice: crate::types::tools::ToolChoice) -> Self {
+        self.config.tool_choice = tool_choice;
+        self
+    }
+
+    /// Force the model to use a specific named tool.
+    ///
+    /// This is a convenience shorthand for
+    /// `.tool_choice(ToolChoice::Tool { name: name.into() })`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use stood::agent::Agent;
+    /// use stood::llm::models::Bedrock;
+    ///
+    /// # tokio_test::block_on(async {
+    /// let agent = Agent::builder()
+    ///     .model(Bedrock::ClaudeHaiku45)
+    ///     .force_tool_use("calculator")
+    ///     .build()
+    ///     .await
+    ///     .unwrap();
+    /// # });
+    /// ```
+    pub fn force_tool_use(mut self, name: impl Into<String>) -> Self {
+        self.config.tool_choice = crate::types::tools::ToolChoice::Tool { name: name.into() };
+        self
+    }
+
+    /// Prevent the model from using any tools.
+    ///
+    /// When set, tools registered on the agent are excluded from the request
+    /// and the model is forced to respond without calling any tools.
+    ///
+    /// This is a convenience shorthand for `.tool_choice(ToolChoice::None)`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use stood::agent::Agent;
+    /// use stood::llm::models::Bedrock;
+    ///
+    /// # tokio_test::block_on(async {
+    /// let agent = Agent::builder()
+    ///     .model(Bedrock::ClaudeHaiku45)
+    ///     .with_builtin_tools()
+    ///     .prevent_tool_use()
+    ///     .build()
+    ///     .await
+    ///     .unwrap();
+    /// # });
+    /// ```
+    pub fn prevent_tool_use(mut self) -> Self {
+        self.config.tool_choice = crate::types::tools::ToolChoice::None;
         self
     }
 

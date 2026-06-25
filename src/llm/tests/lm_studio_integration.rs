@@ -76,6 +76,7 @@ mod tests {
                     max_tokens: Some(50),
                     enable_thinking: false,
                     cache_strategy: crate::llm::traits::CacheStrategy::default(),
+                    tool_choice: crate::types::tools::ToolChoice::Auto,
                     additional_params: std::collections::HashMap::new(),
                 };
 

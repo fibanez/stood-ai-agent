@@ -414,7 +414,25 @@ impl BedrockProvider {
                 .collect();
 
             request["tools"] = json!(claude_tools);
-            request["tool_choice"] = json!({"type": "auto"});
+
+            // Apply tool_choice from config (Claude format)
+            use crate::types::tools::ToolChoice;
+            match &config.tool_choice {
+                ToolChoice::Auto => {
+                    request["tool_choice"] = json!({"type": "auto"});
+                }
+                ToolChoice::Any => {
+                    request["tool_choice"] = json!({"type": "any"});
+                }
+                ToolChoice::Tool { name } => {
+                    request["tool_choice"] = json!({"type": "tool", "name": name});
+                }
+                // ToolChoice::None is handled at the event_loop level (empty tools list),
+                // so if we reach here with None, fall back to auto for safety
+                ToolChoice::None => {
+                    request["tool_choice"] = json!({"type": "auto"});
+                }
+            }
         }
 
         debug!(
@@ -594,9 +612,19 @@ impl BedrockProvider {
                 })
                 .collect();
 
+            // Apply tool_choice from config (Nova format)
+            use crate::types::tools::ToolChoice;
+            let tool_choice_value = match &config.tool_choice {
+                ToolChoice::Auto => json!({"auto": {}}),
+                ToolChoice::Any => json!({"any": {}}),
+                ToolChoice::Tool { name } => json!({"tool": {"name": name}}),
+                // ToolChoice::None handled at event_loop level; fall back to auto if reached
+                ToolChoice::None => json!({"auto": {}}),
+            };
+
             request["toolConfig"] = json!({
                 "tools": nova_tools,
-                "toolChoice": {"auto": {}}
+                "toolChoice": tool_choice_value
             });
         }
 
@@ -761,7 +789,25 @@ impl BedrockProvider {
         // Add tools if provided
         if !mistral_tools.is_empty() {
             request["tools"] = json!(mistral_tools);
-            request["tool_choice"] = json!("auto");
+
+            // Apply tool_choice from config (OpenAI/Mistral format)
+            use crate::types::tools::ToolChoice;
+            match &config.tool_choice {
+                ToolChoice::Auto => {
+                    request["tool_choice"] = json!("auto");
+                }
+                ToolChoice::Any => {
+                    request["tool_choice"] = json!("required");
+                }
+                ToolChoice::Tool { name } => {
+                    request["tool_choice"] =
+                        json!({"type": "function", "function": {"name": name}});
+                }
+                // ToolChoice::None handled at event_loop level; fall back to auto if reached
+                ToolChoice::None => {
+                    request["tool_choice"] = json!("auto");
+                }
+            }
         }
 
         debug!(

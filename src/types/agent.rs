@@ -6,6 +6,7 @@ use uuid::Uuid;
 
 use super::{content::ThinkingSummary, Messages, ToolExecutionResult};
 use crate::llm::traits::CacheStrategy;
+use crate::types::tools::ToolChoice;
 
 /// Configuration for an agent instance
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -33,9 +34,22 @@ pub struct AgentConfig {
     /// See [`CacheStrategy`] for available options.
     #[serde(default)]
     pub cache_strategy: CacheStrategy,
+    /// How the LLM should choose which tools to use
+    ///
+    /// Controls the tool-selection behavior sent to the provider:
+    /// - `ToolChoice::Auto` (default) — the model may or may not call a tool
+    /// - `ToolChoice::Any` — the model must call at least one tool
+    /// - `ToolChoice::Tool { name }` — the model must call the named tool
+    /// - `ToolChoice::None` — no tools are sent; the model cannot call any tool
+    #[serde(default = "default_tool_choice")]
+    pub tool_choice: ToolChoice,
     /// Additional model-specific parameters
     #[serde(default)]
     pub additional_params: HashMap<String, serde_json::Value>,
+}
+
+fn default_tool_choice() -> ToolChoice {
+    ToolChoice::Auto
 }
 
 impl Default for AgentConfig {
@@ -49,6 +63,7 @@ impl Default for AgentConfig {
             max_tokens: None,
             enable_thinking: false, // Haiku doesn't support thinking
             cache_strategy: CacheStrategy::default(),
+            tool_choice: ToolChoice::Auto,
             additional_params: HashMap::new(),
         }
     }

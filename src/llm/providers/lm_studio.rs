@@ -334,12 +334,24 @@ impl LlmProvider for LMStudioProvider {
             })
             .collect();
 
+        // Map ToolChoice to OpenAI format
+        use crate::types::tools::ToolChoice;
+        let openai_tool_choice = match &config.tool_choice {
+            ToolChoice::Auto => serde_json::json!("auto"),
+            ToolChoice::Any => serde_json::json!("required"),
+            ToolChoice::Tool { name } => {
+                serde_json::json!({"type": "function", "function": {"name": name}})
+            }
+            // ToolChoice::None is handled at event_loop level (empty tools list)
+            ToolChoice::None => serde_json::json!("none"),
+        };
+
         // Build OpenAI-compatible request with tools
         let mut request_body = serde_json::json!({
             "model": model_id,
             "messages": openai_messages,
             "tools": openai_tools,
-            "tool_choice": "auto", // Let the model decide when to use tools
+            "tool_choice": openai_tool_choice,
             "temperature": config.temperature.unwrap_or(0.7),
             "max_tokens": config.max_tokens,
         });
@@ -514,6 +526,18 @@ impl LlmProvider for LMStudioProvider {
         // Convert tools to OpenAI format
         let openai_tools = self.convert_tools_to_openai(tools)?;
 
+        // Map ToolChoice to OpenAI format for streaming
+        use crate::types::tools::ToolChoice;
+        let openai_tool_choice = match &config.tool_choice {
+            ToolChoice::Auto => serde_json::json!("auto"),
+            ToolChoice::Any => serde_json::json!("required"),
+            ToolChoice::Tool { name } => {
+                serde_json::json!({"type": "function", "function": {"name": name}})
+            }
+            // ToolChoice::None handled at event_loop level (empty tools list)
+            ToolChoice::None => serde_json::json!("none"),
+        };
+
         // Build OpenAI-compatible streaming request with tools
         let mut request_body = serde_json::json!({
             "model": model_id,
@@ -521,7 +545,8 @@ impl LlmProvider for LMStudioProvider {
             "max_tokens": config.max_tokens.unwrap_or(1000),
             "temperature": config.temperature.unwrap_or(0.7),
             "stream": true,  // Enable streaming
-            "tools": openai_tools  // Include tools
+            "tools": openai_tools,  // Include tools
+            "tool_choice": openai_tool_choice
         });
 
         // Add additional parameters if present

@@ -175,6 +175,26 @@ impl LlmProvider for AnthropicProvider {
             "tools": anthropic_tools
         });
 
+        // Apply tool_choice from config (Anthropic format)
+        use crate::types::tools::ToolChoice;
+        match &config.tool_choice {
+            ToolChoice::Auto => {
+                request_body["tool_choice"] = serde_json::json!({"type": "auto"});
+            }
+            ToolChoice::Any => {
+                request_body["tool_choice"] = serde_json::json!({"type": "any"});
+            }
+            ToolChoice::Tool { name } => {
+                request_body["tool_choice"] =
+                    serde_json::json!({"type": "tool", "name": name});
+            }
+            // ToolChoice::None handled at event_loop level (empty tools list),
+            // but also set the API field to "none" if it somehow reaches here
+            ToolChoice::None => {
+                request_body["tool_choice"] = serde_json::json!({"type": "none"});
+            }
+        }
+
         // Add system message if present
         if let Some(system) = system_message {
             request_body["system"] = serde_json::json!(system);

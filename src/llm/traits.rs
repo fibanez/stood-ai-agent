@@ -223,9 +223,19 @@ pub struct ChatConfig {
     /// See [`CacheStrategy`] for available options.
     #[serde(default)]
     pub cache_strategy: CacheStrategy,
+    /// How the LLM should choose which tools to use
+    ///
+    /// Controls the tool-selection behavior sent to the provider.
+    /// See [`crate::types::tools::ToolChoice`] for available options.
+    #[serde(default = "default_chat_tool_choice")]
+    pub tool_choice: crate::types::tools::ToolChoice,
     /// Additional model-specific parameters
     #[serde(default)]
     pub additional_params: HashMap<String, serde_json::Value>,
+}
+
+fn default_chat_tool_choice() -> crate::types::tools::ToolChoice {
+    crate::types::tools::ToolChoice::Auto
 }
 
 impl ChatConfig {
@@ -238,6 +248,7 @@ impl ChatConfig {
             max_tokens: agent_config.max_tokens,
             enable_thinking: agent_config.enable_thinking,
             cache_strategy: agent_config.cache_strategy.clone(),
+            tool_choice: agent_config.tool_choice.clone(),
             additional_params: agent_config.additional_params.clone(),
         }
     }

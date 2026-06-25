@@ -2233,14 +2233,24 @@ impl EventLoop {
         debug!("🌐 Using non-streaming path, making LLM provider API call");
 
         // Convert tool registry to LLM tool format
-        let llm_tools = self.tool_registry.to_llm_tools().await;
+        let all_llm_tools = self.tool_registry.to_llm_tools().await;
+        let agent_config = self.agent.config();
+
+        // Respect ToolChoice::None — exclude all tools from the request
+        let llm_tools: Vec<crate::llm::traits::Tool> =
+            if agent_config.tool_choice == crate::types::tools::ToolChoice::None {
+                debug!("🚫 ToolChoice::None — excluding all tools from LLM request");
+                vec![]
+            } else {
+                all_llm_tools
+            };
+
         debug!(
-            "🔧 Converted {} tools from registry for LLM provider",
+            "🔧 Sending {} tools to LLM provider",
             llm_tools.len()
         );
 
         // Use agent's configured settings (max_tokens, temperature, etc.)
-        let agent_config = self.agent.config();
         let chat_config = crate::llm::traits::ChatConfig {
             model_id: agent_config.model_id.clone(),
             provider: agent_config.provider,
@@ -2248,6 +2258,7 @@ impl EventLoop {
             max_tokens: agent_config.max_tokens,
             enable_thinking: false,
             cache_strategy: agent_config.cache_strategy.clone(),
+            tool_choice: agent_config.tool_choice.clone(),
             additional_params: std::collections::HashMap::new(),
         };
 
@@ -2372,9 +2383,20 @@ impl EventLoop {
         }
 
         // Convert tool registry to LLM tool format
-        let llm_tools = self.tool_registry.to_llm_tools().await;
+        let all_llm_tools = self.tool_registry.to_llm_tools().await;
+        let agent_config = self.agent.config();
+
+        // Respect ToolChoice::None — exclude all tools from the request
+        let llm_tools: Vec<crate::llm::traits::Tool> =
+            if agent_config.tool_choice == crate::types::tools::ToolChoice::None {
+                debug!("🚫 ToolChoice::None — excluding all tools from streaming LLM request");
+                vec![]
+            } else {
+                all_llm_tools
+            };
+
         debug!(
-            "🔧 Converted {} tools from registry for LLM provider streaming",
+            "🔧 Sending {} tools to LLM provider for streaming",
             llm_tools.len()
         );
 
@@ -2401,7 +2423,6 @@ impl EventLoop {
         }
 
         // Use agent's configured settings (max_tokens, temperature, etc.)
-        let agent_config = self.agent.config();
         let chat_config = crate::llm::traits::ChatConfig {
             model_id: agent_config.model_id.clone(),
             provider: agent_config.provider,
@@ -2409,6 +2430,7 @@ impl EventLoop {
             max_tokens: agent_config.max_tokens,
             enable_thinking: false,
             cache_strategy: agent_config.cache_strategy.clone(),
+            tool_choice: agent_config.tool_choice.clone(),
             additional_params: std::collections::HashMap::new(),
         };
 

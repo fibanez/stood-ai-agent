@@ -135,15 +135,20 @@ impl Tool {
 }
 
 /// How the LLM should choose which tools to use
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
 pub enum ToolChoice {
-    /// LLM can choose any available tool or no tool
+    /// LLM can choose any available tool or no tool (default)
     Auto,
-    /// LLM must use at least one tool
+    /// LLM must use at least one available tool
     Any,
-    /// LLM must use a specific tool
+    /// LLM must use a specific named tool
     Tool { name: String },
+    /// Prevent the LLM from using any tools
+    ///
+    /// When set, tools are excluded from the request entirely so the LLM
+    /// responds without calling any tools regardless of what tools are registered.
+    None,
 }
 
 /// A tool use request from the LLM
