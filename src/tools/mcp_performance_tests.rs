@@ -629,19 +629,8 @@ mod tests {
     }
 
     #[tokio::test]
+    #[ignore = "requires live MCP server; set MCP_TEST_ENDPOINT and run cargo test -- --ignored"]
     async fn test_performance_benchmark_execution() {
-        // This test exercises MCPAgentTool through ToolRegistry, which in turn
-        // calls MCPClient::call_tool().  That method requires an active MCP session
-        // (established via connect()), so it fails without a live MCP server.
-        // Skip when MCP_TEST_ENDPOINT is unset (the default for `cargo test --lib`).
-        if std::env::var("MCP_TEST_ENDPOINT").is_err() {
-            eprintln!(
-                "Skipping test_performance_benchmark_execution: \
-                 set MCP_TEST_ENDPOINT to run tests that require a live MCP server"
-            );
-            return;
-        }
-
         let benchmark = MCPPerformanceBenchmark::new(5).await.unwrap();
 
         // Run a small benchmark
