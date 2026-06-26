@@ -2,7 +2,6 @@ use std::env;
 use stood::tools::builtin::CalculatorTool;
 use stood::{
     agent::{Agent, LogLevel},
-    llm::models::Bedrock,
     tool,
 };
 
@@ -50,7 +49,8 @@ async fn test_nova_non_streaming() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create agent with Nova Lite - DISABLE STREAMING
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaLite)
+        .provider("bedrock")
+        .model("us.amazon.nova-lite-v1:0")
         .system_prompt("You are a helpful assistant.")
         .with_streaming(false) // DISABLE STREAMING
         .tools(tools)

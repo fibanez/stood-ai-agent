@@ -2,7 +2,6 @@ use std::env;
 use std::fs;
 use stood::{
     agent::{Agent, LogLevel},
-    llm::models::Bedrock,
     tools::builtin::FileReadTool,
 };
 
@@ -42,7 +41,8 @@ async fn test_nova_file_read_agent_execution_flow() -> Result<(), Box<dyn std::e
 
     // Create agent with Nova
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaMicro)
+        .provider("bedrock")
+        .model("us.amazon.nova-micro-v1:0")
         .system_prompt(
             "You are a helpful assistant. When asked to read a file, use the file_read tool.",
         )
@@ -134,7 +134,8 @@ async fn test_claude_file_read_agent_control() -> Result<(), Box<dyn std::error:
 
     // Create agent with Claude
     let mut agent = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are a helpful assistant. When asked to read a file, use the file_read tool.",
         )

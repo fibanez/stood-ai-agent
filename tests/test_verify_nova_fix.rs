@@ -1,7 +1,7 @@
 // Test to verify Nova fix works in provider integration style test
 use std::env;
 use std::fs;
-use stood::{agent::Agent, llm::models::Bedrock, tools::builtin::FileReadTool};
+use stood::{agent::Agent, tools::builtin::FileReadTool};
 
 #[tokio::test]
 async fn test_nova_provider_integration_style() -> Result<(), Box<dyn std::error::Error>> {
@@ -32,7 +32,8 @@ async fn test_nova_provider_integration_style() -> Result<(), Box<dyn std::error
 
     // Test Nova file reading via Agent with streaming (this will test tool streaming)
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaMicro)
+        .provider("bedrock")
+        .model("us.amazon.nova-micro-v1:0")
         .system_prompt("You are a helpful assistant. When asked to read a file, use the file_read tool and then summarize the content you found.")
         .tool(Box::new(FileReadTool::new()))
         .build()

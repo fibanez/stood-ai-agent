@@ -24,7 +24,6 @@
 //! Perfect for debugging and understanding the conversation flow!
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::tools::builtin::{CalculatorTool, CurrentTimeTool};
 use tokio;
 use tracing_subscriber;
@@ -47,7 +46,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create an agent with streaming enabled and tools
     let mut agent = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems and the time tool when asked about time.")
         .tool(Box::new(CalculatorTool))
         .tool(Box::new(CurrentTimeTool))

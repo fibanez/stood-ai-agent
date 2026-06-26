@@ -1,7 +1,6 @@
 use std::env;
 use stood::{
     agent::{Agent, LogLevel},
-    llm::models::Bedrock,
     tool,
 };
 
@@ -46,7 +45,8 @@ async fn test_nova_event_loop_minimal() -> Result<(), Box<dyn std::error::Error>
     // Create agent without event loop initialization
     println!("\n🔨 Creating agent with Nova...");
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaLite)
+        .provider("bedrock")
+        .model("us.amazon.nova-lite-v1:0")
         .system_prompt(
             "You are a helpful assistant. Use the simple_add tool when asked to add numbers.",
         )

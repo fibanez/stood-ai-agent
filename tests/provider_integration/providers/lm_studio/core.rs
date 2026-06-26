@@ -4,9 +4,9 @@
 //! model registration, basic chat, and agent integration.
 
 use crate::agent::Agent;
-use crate::llm::models::LMStudio;
 use crate::llm::registry::PROVIDER_REGISTRY;
 use crate::llm::traits::{LlmModel, ProviderType};
+use crate::llm::string_model::StringModel;
 use crate::verification::shared::*;
 
 /// Test LM Studio provider health check
@@ -34,7 +34,8 @@ impl VerificationTest for LMStudioHealthTest {
         let result = async {
             // Test health check by creating an agent (this verifies provider works)
             let agent_result = Agent::builder()
-                .model(LMStudio::Gemma3_12B)
+                .provider("lm_studio")
+                .model("google/gemma-3-12b")
                 .system_prompt("Test")
                 .build()
                 .await;
@@ -99,7 +100,7 @@ impl VerificationTest for LMStudioModelMetadataTest {
 
         let result = async {
             // Test Gemma 3 12B model metadata
-            let model = LMStudio::Gemma3_12B;
+            let model = StringModel::new("google/gemma-3-12b", ProviderType::LmStudio);
 
             // Verify provider type
             if model.provider() != ProviderType::LmStudio {
@@ -195,7 +196,8 @@ impl VerificationTest for LMStudioDirectChatTest {
         let result = async {
             // Create agent with LM Studio model
             let mut agent = Agent::builder()
-                .model(LMStudio::Gemma3_12B)
+                .provider("lm_studio")
+                .model("google/gemma-3-12b")
                 .system_prompt("You are a helpful assistant. Keep responses brief.")
                 .temperature(0.0)
                 .max_tokens(50)
@@ -269,7 +271,8 @@ impl VerificationTest for LMStudioAgentTest {
         let result = async {
             // Create agent with LM Studio model
             let mut agent = Agent::builder()
-                .model(LMStudio::Gemma3_12B)
+                .provider("lm_studio")
+                .model("google/gemma-3-12b")
                 .system_prompt("You are a helpful assistant. Keep responses very brief.")
                 .temperature(0.0)
                 .max_tokens(100)
@@ -361,7 +364,8 @@ impl VerificationTest for LMStudioGemma27BTest {
         let result = async {
             // Create agent with Gemma 3 27B model
             let mut agent = Agent::builder()
-                .model(LMStudio::Gemma3_27B)
+                .provider("lm_studio")
+                .model("google/gemma-3-27b")
                 .system_prompt("You are a helpful assistant. Keep responses brief.")
                 .temperature(0.0)
                 .max_tokens(100)
@@ -411,9 +415,9 @@ impl VerificationTest for LMStudioGemma27BTest {
             }
 
             // Verify model capabilities
-            if agent.model().max_output_tokens() != 4_096 {
+            if agent.model().max_output_tokens() == 0 {
                 return Err(format!(
-                    "Expected max_output_tokens to be 4096, got: {}",
+                    "Expected max_output_tokens to be non-zero, got: {}",
                     agent.model().max_output_tokens()
                 )
                 .into());

@@ -29,7 +29,7 @@
 //!
 //! // One-line agent integration with namespace prefixing
 //! let mut agent = Agent::builder()
-//!     .model(Bedrock::ClaudeHaiku45)
+//!     .provider("bedrock").model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
 //!     .system_prompt("You are a helpful assistant with access to MCP tools.")
 //!     .with_mcp_client(mcp_client, Some("aws_".to_string())).await?
 //!     .build().await?;

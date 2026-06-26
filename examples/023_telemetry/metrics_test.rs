@@ -3,7 +3,6 @@
 use fastrand;
 use std::time::Duration;
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::telemetry::TelemetryConfig;
 use stood::tool;
 
@@ -146,7 +145,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create agent with all six tools using Nova Micro (AWS Bedrock)
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaMicro) // Nova Micro via AWS Bedrock - reliable tool calling
+        .provider("bedrock")
+        .model("us.amazon.nova-micro-v1:0") // Nova Micro via AWS Bedrock - reliable tool calling
         .with_streaming(false) // Disable streaming for troubleshooting
         .with_metrics()
         .tool(check_weather())

@@ -33,7 +33,6 @@
 //! - ✅ Error handling and graceful fallbacks
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::mcp::transport::{StdioConfig, TransportFactory};
 use stood::mcp::{MCPClient, MCPClientConfig};
 
@@ -170,7 +169,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n🤖 Creating agent with NEW simple MCP integration...");
 
     let mut agent = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are an AWS expert assistant with access to comprehensive AWS documentation. \
              Always use the aws_docs_search_documentation tool to get authoritative information \

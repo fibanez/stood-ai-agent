@@ -5,7 +5,10 @@
 
 use super::*;
 use crate::agent::Agent;
-use crate::llm::models::{Anthropic, Bedrock, LMStudio};
+// Model strings used in tests
+const HAIKU: &str = "us.anthropic.claude-haiku-4-5-20251001-v1:0";
+const NOVA_MICRO: &str = "us.amazon.nova-micro-v1:0";
+const LM_GEMMA3_12B: &str = "google/gemma-3-12b";
 use crate::tools::builtin::{CalculatorTool, CurrentTimeTool};
 use std::time::Instant;
 
@@ -40,21 +43,21 @@ impl VerificationTest for BasicChatTest {
             let mut agent = match config.provider {
                 ProviderType::LmStudio => {
                     Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
+                        .provider("lm_studio").model(LM_GEMMA3_12B)
                         .system_prompt("You are a helpful assistant. Keep responses brief.")
                         .build()
                         .await?
                 }
                 ProviderType::Bedrock => {
                     Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
+                        .provider("bedrock").model(HAIKU)
                         .system_prompt("You are a helpful assistant. Keep responses brief.")
                         .build()
                         .await?
                 }
                 ProviderType::Anthropic => {
                     Agent::builder()
-                        .model(Anthropic::ClaudeHaiku45)
+                        .provider("anthropic").model("claude-haiku-4-5-20251001")
                         .system_prompt("You are a helpful assistant. Keep responses brief.")
                         .build()
                         .await?
@@ -129,21 +132,21 @@ impl VerificationTest for MultiTurnConversationTest {
             let mut agent = match config.provider {
                 ProviderType::LmStudio => {
                     Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
+                        .provider("lm_studio").model(LM_GEMMA3_12B)
                         .system_prompt("You are a helpful assistant.")
                         .build()
                         .await?
                 }
                 ProviderType::Bedrock => {
                     Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
+                        .provider("bedrock").model(HAIKU)
                         .system_prompt("You are a helpful assistant.")
                         .build()
                         .await?
                 }
                 ProviderType::Anthropic => {
                     Agent::builder()
-                        .model(Anthropic::ClaudeHaiku45)
+                        .provider("anthropic").model("claude-haiku-4-5-20251001")
                         .system_prompt("You are a helpful assistant.")
                         .build()
                         .await?
@@ -236,7 +239,7 @@ impl VerificationTest for BasicToolCallingTest {
             let mut agent = match config.provider {
                 ProviderType::LmStudio => {
                     Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
+                        .provider("lm_studio").model(LM_GEMMA3_12B)
                         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                         .tool(Box::new(CalculatorTool))
                         .build()
@@ -244,7 +247,7 @@ impl VerificationTest for BasicToolCallingTest {
                 }
                 ProviderType::Bedrock => {
                     Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
+                        .provider("bedrock").model(HAIKU)
                         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                         .tool(Box::new(CalculatorTool))
                         .build()
@@ -252,7 +255,7 @@ impl VerificationTest for BasicToolCallingTest {
                 }
                 ProviderType::Anthropic => {
                     Agent::builder()
-                        .model(Anthropic::ClaudeHaiku45)
+                        .provider("anthropic").model("claude-haiku-4-5-20251001")
                         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                         .tool(Box::new(CalculatorTool))
                         .build()
@@ -329,7 +332,7 @@ impl VerificationTest for MultipleToolsTest {
             let mut agent = match config.provider {
                 ProviderType::LmStudio => {
                     Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
+                        .provider("lm_studio").model(LM_GEMMA3_12B)
                         .system_prompt("You are a helpful assistant with access to tools.")
                         .tool(Box::new(CalculatorTool))
                         .tool(Box::new(CurrentTimeTool))
@@ -338,7 +341,7 @@ impl VerificationTest for MultipleToolsTest {
                 }
                 ProviderType::Bedrock => {
                     Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
+                        .provider("bedrock").model(HAIKU)
                         .system_prompt("You are a helpful assistant with access to tools.")
                         .tool(Box::new(CalculatorTool))
                         .tool(Box::new(CurrentTimeTool))
@@ -347,7 +350,7 @@ impl VerificationTest for MultipleToolsTest {
                 }
                 ProviderType::Anthropic => {
                     Agent::builder()
-                        .model(Anthropic::ClaudeHaiku45)
+                        .provider("anthropic").model("claude-haiku-4-5-20251001")
                         .system_prompt("You are a helpful assistant with access to tools.")
                         .tool(Box::new(CalculatorTool))
                         .tool(Box::new(CurrentTimeTool))
@@ -453,7 +456,7 @@ impl VerificationTest for BasicStreamingTest {
             let mut agent = match (config.provider, config.model_id.as_str()) {
                 (ProviderType::LmStudio, "gemma-3-12b") => {
                     Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
+                        .provider("lm_studio").model(LM_GEMMA3_12B)
                         .system_prompt("You are a helpful assistant. Keep responses brief.")
                         .execution_mode(AgentExecutionMode::Streaming)
                         .build()
@@ -461,7 +464,7 @@ impl VerificationTest for BasicStreamingTest {
                 }
                 (ProviderType::Bedrock, "claude-3-5-haiku") => {
                     Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
+                        .provider("bedrock").model(HAIKU)
                         .system_prompt("You are a helpful assistant. Keep responses brief.")
                         .execution_mode(AgentExecutionMode::Streaming)
                         .build()
@@ -469,7 +472,7 @@ impl VerificationTest for BasicStreamingTest {
                 }
                 (ProviderType::Bedrock, "amazon-nova-micro") => {
                     Agent::builder()
-                        .model(Bedrock::NovaMicro)
+                        .provider("bedrock").model(NOVA_MICRO)
                         .system_prompt("You are a helpful assistant. Keep responses brief.")
                         .execution_mode(AgentExecutionMode::Streaming)
                         .build()
@@ -629,7 +632,7 @@ impl VerificationTest for StreamingWithToolsTest {
             let mut agent = match (config.provider, config.model_id.as_str()) {
                 (ProviderType::LmStudio, "gemma-3-12b") => {
                     Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
+                        .provider("lm_studio").model(LM_GEMMA3_12B)
                         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                         .tool(Box::new(CalculatorTool))
                         .execution_mode(AgentExecutionMode::Streaming)
@@ -638,7 +641,7 @@ impl VerificationTest for StreamingWithToolsTest {
                 }
                 (ProviderType::Bedrock, "claude-3-5-haiku") => {
                     Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
+                        .provider("bedrock").model(HAIKU)
                         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                         .tool(Box::new(CalculatorTool))
                         .execution_mode(AgentExecutionMode::Streaming)
@@ -647,7 +650,7 @@ impl VerificationTest for StreamingWithToolsTest {
                 }
                 (ProviderType::Bedrock, "amazon-nova-micro") => {
                     Agent::builder()
-                        .model(Bedrock::NovaMicro)
+                        .provider("bedrock").model(NOVA_MICRO)
                         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                         .tool(Box::new(CalculatorTool))
                         .execution_mode(AgentExecutionMode::Streaming)

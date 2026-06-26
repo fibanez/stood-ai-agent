@@ -29,7 +29,7 @@
 //! manager.add_assistant_message("The capital of France is Paris.");
 //!
 //! // Format for Bedrock API
-//! let model = Bedrock::ClaudeHaiku45;
+//! let model = stood::llm::string_model::StringModel::new("us.anthropic.claude-haiku-4-5-20251001-v1:0", stood::llm::traits::ProviderType::Bedrock);
 //! let request = manager.format_for_bedrock(&model)?;
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
@@ -484,7 +484,7 @@ mod tests {
         manager.add_user_message("What is 2+2?");
         manager.add_assistant_message("2+2 equals 4");
 
-        let model = crate::llm::models::Bedrock::ClaudeHaiku45;
+        let model = crate::llm::string_model::StringModel::new("us.anthropic.claude-haiku-4-5-20251001-v1:0", crate::llm::traits::ProviderType::Bedrock);
         let formatted = manager.format_for_bedrock(&model).unwrap();
 
         // Should have system prompt
@@ -525,7 +525,7 @@ mod tests {
         manager.add_message(Message::user(""));
         manager.add_user_message("Hello");
 
-        let model = crate::llm::models::Bedrock::ClaudeHaiku45;
+        let model = crate::llm::string_model::StringModel::new("us.anthropic.claude-haiku-4-5-20251001-v1:0", crate::llm::traits::ProviderType::Bedrock);
         let formatted = manager.format_for_bedrock(&model).unwrap();
 
         // Should skip empty messages in formatting

@@ -28,6 +28,7 @@ async fn test_nova_tool_calls() -> Result<(), Box<dyn std::error::Error>> {
         messages: vec![Message::user(
             "Please use the calculator tool to compute 15 * 8",
         )],
+        system_prompt: None,
     };
 
     let config = ChatConfig {

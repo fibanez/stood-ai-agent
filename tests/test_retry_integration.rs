@@ -35,11 +35,11 @@ async fn test_retry_config_integration() {
 #[tokio::test]
 async fn test_agent_builder_retry_methods() {
     use stood::agent::Agent;
-    use stood::llm::models::LMStudio;
 
     // Test that agent builder accepts retry configuration
     let agent_builder = Agent::builder()
-        .model(LMStudio::TessaRust7B)
+        .provider("lm_studio")
+        .model("tessa-rust-t1-7b")
         .with_retry_config(RetryConfig::lm_studio_aggressive())
         .with_conservative_retry()
         .with_aggressive_retry()

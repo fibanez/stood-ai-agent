@@ -85,7 +85,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ```rust
 use stood::agent::Agent;                    // Core agent builder and execution
-use stood::llm::models::Bedrock;           // AWS Bedrock model types
+// No model import needed — use plain strings
 use stood::mcp::{MCPClient, MCPClientConfig}; // MCP client for external tools
 use stood::mcp::transport::{TransportFactory, WebSocketConfig}; // MCP transport layer
 use stood::tool;                           // Macro for creating custom tools
@@ -115,7 +115,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create an agent with custom configuration and remote MCP tools
     let agent = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant with access to Acme Corp tools")
         .temperature(0.7)
         .max_tokens(1000)
@@ -170,7 +171,8 @@ let agent = Agent::builder()
 // Agent-based evaluation with specialized evaluator
 // First create the evaluator agent
 let evaluator = Agent::builder()
-    .model(Bedrock::ClaudeHaiku45)
+    .provider("bedrock")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
     .system_prompt("You are a critical evaluator. Assess task completion quality.")
     .build().await?;
 

@@ -34,7 +34,6 @@ use stood::{
     },
     tools::builtin::*,
     tool,
-    llm::models::Bedrock,
 };
 
 #[tool]
@@ -201,7 +200,8 @@ impl TelemetryDemo {
 
         // Configure agent with smart telemetry (auto-detection)
         let agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.7)
             .max_tokens(2048)
             .system_prompt(Self::create_system_prompt())

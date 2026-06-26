@@ -1,80 +1,36 @@
 //! Multi-provider LLM integration with unified interface and enterprise-grade reliability.
 //!
 //! This module provides a comprehensive abstraction layer for interacting with multiple LLM providers
-//! including AWS Bedrock, LM Studio, Anthropic, OpenAI, Ollama, OpenRouter, and Candle. You'll get
-//! consistent APIs, automatic provider selection, streaming support, and robust error handling
-//! across all supported providers.
+//! including AWS Bedrock, LM Studio, Anthropic, OpenAI, Ollama, OpenRouter, and Candle.
 //!
 //! # Quick Start
 //!
-//! Use different providers with the same agent API:
+//! Use different providers with the same agent API via runtime strings:
 //!
 //! ```no_run
 //! use stood::agent::Agent;
-//! use stood::llm::models::{Bedrock, LMStudio};
 //!
 //! #[tokio::main]
 //! async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!     // Use AWS Bedrock (cloud)
 //!     let mut bedrock_agent = Agent::builder()
-//!         .model(Bedrock::ClaudeHaiku45)
+//!         .provider("bedrock")
+//!         .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
 //!         .build().await?;
 //!
-//!     // Use LM Studio (local)
-//!     let mut local_agent = Agent::builder()
-//!         .model(LMStudio::Gemma3_12B)
-//!         .build().await?;
-//!
-//!     // Same API for both providers
-//!     let result1 = bedrock_agent.execute("Hello from cloud").await?;
-//!     let result2 = local_agent.execute("Hello from local").await?;
+//!     // Same API for all providers
+//!     let result = bedrock_agent.execute("Hello!").await?;
+//!     println!("{}", result.response);
 //!
 //!     Ok(())
 //! }
 //! ```
 //!
-//! # Architecture
-//!
-//! ```text
-//! Agent → ProviderRegistry → LlmProvider (Bedrock | LMStudio | Anthropic | OpenAI)
-//!   ↓           ↓                  ↓
-//! Model    LlmModel enum     Provider-specific API calls
-//! Config   (Claude35Haiku,   (aws-sdk-bedrockruntime, reqwest, etc.)
-//!          Gemma3_12B, etc.)
-//! ```
-//!
-//! # Key Features
-//!
-//! - **Unified Interface** - Same API across all providers via `LlmProvider` trait
-//! - **Type-Safe Models** - `LlmModel` enum prevents invalid model/provider combinations
-//! - **Automatic Configuration** - `ProviderRegistry` handles provider setup and discovery
-//! - **Streaming Support** - Real-time response streaming for all providers
-//! - **Tool Integration** - Native tool calling support where providers support it
-//! - **Error Handling** - Comprehensive error types with provider-specific context
-//! - **Performance Optimization** - Connection pooling and request batching
-//!
-//! # Supported Providers
-//!
-//! **AWS Bedrock:**
-//! - Claude 3.5 Haiku/Sonnet/Opus
-//! - Amazon Nova Pro/Lite/Micro
-//! - Streaming and tool support
-//!
-//! **LM Studio:**
-//! - Gemma 3 12B/27B
-//! - Llama 3 70B
-//! - Mistral 7B
-//! - Local model hosting
-//!
-//! **Coming Soon:**
-//! - Anthropic Direct API
-//! - OpenAI GPT-4/3.5
-//! - Ollama local models
-//!
 //! # Key Types
 //!
 //! - [`LlmProvider`] - Core trait for provider implementations
-//! - [`LlmModel`] - Type-safe model selection enum
+//! - [`LlmModel`] - Model abstraction trait
+//! - [`StringModel`] - Runtime string-based model selection
 //! - [`ProviderRegistry`] - Central registry for provider configuration
 //! - [`ChatConfig`] - Provider-agnostic chat configuration
 //! - [`ChatResponse`] - Unified response format across providers
@@ -86,6 +42,7 @@ pub mod models;
 pub mod providers;
 pub mod registry;
 pub mod streaming;
+pub mod string_model;
 pub mod traits;
 
 #[cfg(test)]
@@ -100,8 +57,8 @@ pub use traits::{
     ProviderCapabilities, ProviderType, StreamEvent, Tool, ToolCall, Usage,
 };
 
-// Re-export model provider modules for the single API pattern
-pub use models::{Bedrock, LMStudio};
+// Re-export string_model for the runtime string-based API
+pub use string_model::StringModel;
 
 // Re-export registry for configuration
 pub use registry::{ProviderConfig, ProviderRegistry, PROVIDER_REGISTRY};

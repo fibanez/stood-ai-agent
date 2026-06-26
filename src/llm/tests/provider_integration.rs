@@ -11,8 +11,8 @@
 //!
 //! This is intentional - integration tests must validate real provider connectivity.
 
-use crate::llm::traits::{ChatConfig, LlmModel, ProviderType};
-use crate::llm::{Bedrock, ProviderRegistry, PROVIDER_REGISTRY};
+use crate::llm::traits::{ChatConfig, ProviderType};
+use crate::llm::{ProviderRegistry, PROVIDER_REGISTRY};
 use crate::types::messages::Message;
 use crate::types::Messages;
 
@@ -98,7 +98,7 @@ async fn test_bedrock_provider_streaming() {
     let config = ChatConfig::default();
 
     let stream_result = provider
-        .chat_streaming(Bedrock::ClaudeSonnet45.model_id(), &messages, &config)
+        .chat_streaming("us.anthropic.claude-sonnet-4-5-20250929-v1:0", &messages, &config)
         .await;
 
     match stream_result {
@@ -179,7 +179,7 @@ async fn test_bedrock_provider_tool_calling() {
 
     let response = provider
         .chat_with_tools(
-            Bedrock::ClaudeSonnet45.model_id(),
+            "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
             &messages,
             &[calculator_tool],
             &config,
@@ -256,7 +256,7 @@ async fn test_bedrock_provider_error_scenarios() {
     // Test with empty messages
     let empty_messages = Messages::new();
     let response = provider
-        .chat(Bedrock::ClaudeSonnet45.model_id(), &empty_messages, &config)
+        .chat("us.anthropic.claude-sonnet-4-5-20250929-v1:0", &empty_messages, &config)
         .await;
 
     match response {

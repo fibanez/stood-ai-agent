@@ -3,7 +3,6 @@
 //! This example tests tool calling with Mistral models.
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::tool;
 
 /// Simple calculator tool for testing
@@ -30,7 +29,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Initialize the agent with Mistral Large 3 and calculator tool
     println!("Creating agent with Mistral Large 3 and calculator tool...");
     let mut agent = Agent::builder()
-        .model(Bedrock::MistralLarge3)
+        .provider("bedrock")
+        .model("mistral.mistral-large-3-675b-instruct")
         .tool(calculator())
         .build()
         .await?;

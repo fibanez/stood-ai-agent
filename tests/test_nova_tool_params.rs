@@ -87,6 +87,7 @@ async fn test_nova_tool_parameter_interpretation() -> Result<(), Box<dyn std::er
             model_id: "us.amazon.nova-lite-v1:0".to_string(),
             provider: ProviderType::Bedrock,
             enable_thinking: false,
+            cache_strategy: stood::llm::traits::CacheStrategy::default(),
             additional_params: std::collections::HashMap::new(),
         };
 
@@ -127,6 +128,7 @@ async fn test_nova_tool_parameter_interpretation() -> Result<(), Box<dyn std::er
         model_id: "anthropic.claude-3-5-haiku-20241022-v1:0".to_string(),
         provider: ProviderType::Bedrock,
         enable_thinking: false,
+        cache_strategy: stood::llm::traits::CacheStrategy::default(),
         additional_params: std::collections::HashMap::new(),
     };
 

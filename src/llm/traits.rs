@@ -191,6 +191,25 @@ impl ProviderType {
             ProviderType::Candle => "candle",
         }
     }
+
+    /// Parse a provider name string (case-insensitive) into a ProviderType.
+    ///
+    /// Recognised names: `bedrock`, `anthropic`, `openai`, `lm_studio`,
+    /// `lmstudio`, `ollama`, `openrouter`, `candle`.
+    ///
+    /// Returns `None` for unknown provider names.
+    pub fn from_str(s: &str) -> Option<Self> {
+        match s.to_lowercase().as_str() {
+            "bedrock" => Some(ProviderType::Bedrock),
+            "lm_studio" | "lmstudio" => Some(ProviderType::LmStudio),
+            "anthropic" => Some(ProviderType::Anthropic),
+            "openai" => Some(ProviderType::OpenAI),
+            "ollama" => Some(ProviderType::Ollama),
+            "openrouter" => Some(ProviderType::OpenRouter),
+            "candle" => Some(ProviderType::Candle),
+            _ => None,
+        }
+    }
 }
 
 impl std::fmt::Display for ProviderType {

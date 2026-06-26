@@ -2,7 +2,6 @@ use std::env;
 use std::fs;
 use stood::{
     agent::{Agent, LogLevel},
-    llm::models::Bedrock,
     tools::builtin::FileReadTool,
 };
 
@@ -42,7 +41,8 @@ async fn test_nova_non_streaming_tool_execution() -> Result<(), Box<dyn std::err
 
     // Create agent with Nova - disable streaming
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaMicro)
+        .provider("bedrock")
+        .model("us.amazon.nova-micro-v1:0")
         .system_prompt(
             "You are a helpful assistant. When asked to read a file, use the file_read tool.",
         )

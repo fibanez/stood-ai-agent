@@ -3,7 +3,6 @@
 
 use std::time::Duration;
 use stood::agent::Agent;
-use stood::llm::models::LMStudio;
 
 #[tokio::test]
 async fn debug_in_test_env() {
@@ -19,7 +18,8 @@ async fn debug_in_test_env() {
     // Test with timeout
     let result = tokio::time::timeout(Duration::from_secs(10), async {
         let mut agent = Agent::builder()
-            .model(LMStudio::Gemma3_12B)
+            .provider("lm_studio")
+            .model("google/gemma-3-12b")
             .system_prompt("You are a helpful assistant.")
             .temperature(0.0)
             .max_tokens(50)

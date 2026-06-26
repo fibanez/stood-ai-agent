@@ -1,7 +1,6 @@
 use std::env;
 use stood::{
     agent::{Agent, LogLevel},
-    llm::models::Bedrock,
     tool,
 };
 
@@ -53,7 +52,8 @@ async fn test_nova_tool_execution_minimal() -> Result<(), Box<dyn std::error::Er
 
     // Create agent with Nova - non-streaming to simplify
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaLite)
+        .provider("bedrock")
+        .model("us.amazon.nova-lite-v1:0")
         .system_prompt("You are a helpful assistant with access to tools. When asked to do math, use the simple_calculator tool.")
         .with_streaming(false)
         .tools(tools)
@@ -131,7 +131,8 @@ async fn test_claude_tool_execution_control() -> Result<(), Box<dyn std::error::
 
     // Create agent with Claude - non-streaming
     let mut agent = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant with access to tools. When asked to do math, use the simple_calculator tool.")
         .with_streaming(false)
         .tools(tools)

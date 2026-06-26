@@ -6,8 +6,8 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::llm::models::LMStudio;
     use crate::llm::registry::PROVIDER_REGISTRY;
+    use crate::llm::string_model::StringModel;
     use crate::llm::traits::{ChatConfig, LlmModel, LlmProvider, ProviderType};
     use crate::types::Messages;
 
@@ -68,7 +68,7 @@ mod tests {
 
             if health.is_ok() && health.unwrap().healthy {
                 // LM Studio is running, try a chat request
-                let model = LMStudio::Gemma3_12B;
+                let model = StringModel::new("google/gemma-3-12b", ProviderType::LmStudio);
                 let config = ChatConfig {
                     model_id: model.model_id().to_string(),
                     provider: ProviderType::LmStudio,
@@ -102,9 +102,9 @@ mod tests {
     #[test]
     fn test_lm_studio_model_metadata() {
         // Test that LM Studio models have correct metadata
-        let gemma = LMStudio::Gemma3_12B;
-        let llama = LMStudio::Llama3_70B;
-        let mistral = LMStudio::Mistral7B;
+        let gemma = StringModel::new("google/gemma-3-12b", ProviderType::LmStudio);
+        let llama = StringModel::new("llama-3-70b", ProviderType::LmStudio);
+        let mistral = StringModel::new("mistralai/mistral-7b-instruct-v0.3", ProviderType::LmStudio);
 
         assert_eq!(gemma.provider(), ProviderType::LmStudio);
         assert_eq!(gemma.model_id(), "google/gemma-3-12b");
@@ -121,8 +121,8 @@ mod tests {
     #[test]
     fn test_local_testing_setup() {
         // Verify that we have a local alternative to Bedrock
-        let bedrock_model = crate::llm::models::Bedrock::ClaudeSonnet45;
-        let lm_studio_model = LMStudio::Gemma3_12B;
+        let bedrock_model = StringModel::new("us.anthropic.claude-sonnet-4-5-20250929-v1:0", ProviderType::Bedrock);
+        let lm_studio_model = StringModel::new("google/gemma-3-12b", ProviderType::LmStudio);
 
         println!(
             "🌐 Bedrock (cloud): {} via {:?}",
