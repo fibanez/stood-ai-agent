@@ -39,7 +39,7 @@ async fn test_agent_builder_retry_methods() {
     // Test that agent builder accepts retry configuration
     let agent_builder = Agent::builder()
         .provider("lm_studio")
-        .model_str("tessa-rust-t1-7b")
+        .model("tessa-rust-t1-7b")
         .with_retry_config(RetryConfig::lm_studio_aggressive())
         .with_conservative_retry()
         .with_aggressive_retry()

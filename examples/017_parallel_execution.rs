@@ -225,7 +225,7 @@ async fn setup_multi_round_agent(
 
     let agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .temperature(0.0)
         .max_tokens(1500)  // Increased for larger prompts
         .tools(vec![task_executor()])

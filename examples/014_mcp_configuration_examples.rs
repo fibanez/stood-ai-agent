@@ -40,7 +40,7 @@ async fn configure_stdio_mcp_server() -> Result<(), Box<dyn std::error::Error>> 
     // Create agent with NEW simple MCP integration
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are a helpful assistant with access to MCP tools. Use them when appropriate.",
         )
@@ -82,7 +82,7 @@ async fn configure_websocket_mcp_server() -> Result<(), Box<dyn std::error::Erro
     // Create agent with NEW simple MCP integration
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant with access to WebSocket MCP tools.")
         .with_mcp_client(mcp_client, Some("ws_".to_string()))
         .await?
@@ -146,7 +146,7 @@ async fn agent_with_multiple_mcp_servers() -> Result<(), Box<dyn std::error::Err
             // If both servers work, demonstrate the full multi-server setup
             let mut agent = Agent::builder()
                 .provider("bedrock")
-                .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+                .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                 .system_prompt("You are an assistant with access to both AWS tools and WebSocket tools via MCP.")
                 .with_mcp_clients(vec![
                     (stdio_client, Some("aws_".to_string())),  // AWS tools with aws_ prefix
@@ -170,7 +170,7 @@ async fn agent_with_multiple_mcp_servers() -> Result<(), Box<dyn std::error::Err
             // Create agent with just STDIO client (demonstrates fallback pattern)
             let mut agent = Agent::builder()
                 .provider("bedrock")
-                .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+                .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                 .system_prompt("You are an assistant with access to AWS tools via MCP.")
                 .with_mcp_client(stdio_client, Some("aws_".to_string()))
                 .await?

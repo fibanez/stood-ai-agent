@@ -120,7 +120,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let agent_result = Agent::builder()
         .name("Demo Agent") // Descriptive name for this agent's purpose
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant that provides concise answers.")
         .with_telemetry(telemetry_config)
         .build()

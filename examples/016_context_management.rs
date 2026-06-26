@@ -257,7 +257,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create agent with simple builder pattern
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a code documentation assistant. IMPORTANT: You have access to ONLY these 4 tools: read_code_file, analyze_code_structure, generate_api_docs, and create_project_overview. You MUST NOT attempt to use any calculator, math, computation, or arithmetic tools - they do not exist and will cause errors. Focus ONLY on documentation and text analysis using the available tools. Never try to calculate anything.")
         .tools(vec![
             read_code_file(),

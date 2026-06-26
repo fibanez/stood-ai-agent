@@ -47,7 +47,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create an agent with streaming enabled and tools
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems and the time tool when asked about time.")
         .tool(Box::new(CalculatorTool))
         .tool(Box::new(CurrentTimeTool))

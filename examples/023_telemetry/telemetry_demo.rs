@@ -201,7 +201,7 @@ impl TelemetryDemo {
         // Configure agent with smart telemetry (auto-detection)
         let agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.7)
             .max_tokens(2048)
             .system_prompt(Self::create_system_prompt())

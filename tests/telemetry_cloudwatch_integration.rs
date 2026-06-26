@@ -468,7 +468,7 @@ async fn test_agent_with_cloudwatch_telemetry() {
     let agent_result = Agent::builder()
         .name("Integration Test Agent")
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a test assistant. Always respond with exactly: TELEMETRY_TEST_OK")
         .max_tokens(50)
         .with_telemetry(telemetry_config)
@@ -525,7 +525,7 @@ async fn test_agent_with_large_response_telemetry() {
     let agent_result = Agent::builder()
         .name("Large Response Test Agent")
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a verbose assistant. When asked to explain something, provide a very detailed explanation with many examples.")
         .max_tokens(4000) // Allow for larger responses
         .with_telemetry(telemetry_config)

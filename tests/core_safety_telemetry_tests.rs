@@ -41,7 +41,7 @@ async fn test_agent_works_without_telemetry_config() {
     // Build agent with minimal config - NO telemetry settings
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a test assistant. Always respond with exactly: TEST_OK")
         .max_tokens(50)
         .build()
@@ -85,7 +85,7 @@ async fn test_agent_works_with_telemetry_disabled() {
     // Build agent with telemetry explicitly disabled
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a test assistant. Always respond with exactly: DISABLED_OK")
         .max_tokens(50)
         .with_telemetry(telemetry_config)
@@ -125,7 +125,7 @@ async fn test_agent_works_with_otel_env_disabled() {
     // Build agent using env-based telemetry config
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a test assistant. Always respond with exactly: ENV_OK")
         .max_tokens(50)
         .with_telemetry_from_env()
@@ -180,7 +180,7 @@ async fn test_file_logging_works_independently() {
             // Build agent WITHOUT any OTEL telemetry
             let mut agent = Agent::builder()
                 .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                 .system_prompt("You are a test assistant. Say LOGGING_OK")
                 .max_tokens(50)
                 .build()
@@ -210,7 +210,7 @@ async fn test_file_logging_works_independently() {
 
             let mut agent = Agent::builder()
                 .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                 .system_prompt("You are a test assistant. Say LOGGING_OK")
                 .max_tokens(50)
                 .build()
@@ -305,7 +305,7 @@ async fn test_agent_tool_execution_without_telemetry() {
     // Build agent without telemetry, with tools
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You have an echo tool. Use it to echo 'TOOL_OK'.")
         .max_tokens(200)
         .tool(Box::new(EchoTool))
@@ -341,7 +341,7 @@ async fn test_agent_multi_turn_without_telemetry() {
     // Build agent without telemetry
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant. Remember what we discuss.")
         .max_tokens(100)
         .build()

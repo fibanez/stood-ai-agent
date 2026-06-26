@@ -46,7 +46,7 @@ async fn test_nova_event_loop_minimal() -> Result<(), Box<dyn std::error::Error>
     println!("\n🔨 Creating agent with Nova...");
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-lite-v1:0")
+        .model("us.amazon.nova-lite-v1:0")
         .system_prompt(
             "You are a helpful assistant. Use the simple_add tool when asked to add numbers.",
         )

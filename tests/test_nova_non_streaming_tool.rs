@@ -42,7 +42,7 @@ async fn test_nova_non_streaming_tool_execution() -> Result<(), Box<dyn std::err
     // Create agent with Nova - disable streaming
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-micro-v1:0")
+        .model("us.amazon.nova-micro-v1:0")
         .system_prompt(
             "You are a helpful assistant. When asked to read a file, use the file_read tool.",
         )

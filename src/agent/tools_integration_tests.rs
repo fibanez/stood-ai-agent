@@ -40,7 +40,7 @@ async fn test_agent_with_builtin_tools_registry() {
     // Create agent
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant with access to tools.")
         .build()
         .await
@@ -84,7 +84,7 @@ async fn test_tool_executor_with_aws_agent_workflow() {
     // Create agent for reasoning/planning
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You help users by understanding their requests and explaining what tools might be useful.")
         .build()
         .await.expect("Failed to build agent");
@@ -178,7 +178,7 @@ async fn test_parallel_tool_execution_with_agent() {
     // Create agent
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You coordinate multiple tool executions and summarize results.")
         .build()
         .await
@@ -277,7 +277,7 @@ async fn test_error_handling_in_agent_tool_workflow() {
     // Create agent
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You help users understand and handle tool execution errors.")
         .build()
         .await

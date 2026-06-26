@@ -97,7 +97,7 @@ async fn test_new_provider_architecture_demo() {
     println!("   - ✅ Model metadata system working");
     println!("   - ✅ Provider registry lazy loading working");
     println!("   - ✅ Provider creation and capabilities working");
-    println!("   - ✅ String API pattern: provider/model_str works");
+    println!("   - ✅ String API pattern: provider/model works");
     println!("   - ✅ Type safety: Can't mix providers and models");
 }
 

@@ -33,7 +33,7 @@ async fn test_nova_provider_integration_style() -> Result<(), Box<dyn std::error
     // Test Nova file reading via Agent with streaming (this will test tool streaming)
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-micro-v1:0")
+        .model("us.amazon.nova-micro-v1:0")
         .system_prompt("You are a helpful assistant. When asked to read a file, use the file_read tool and then summarize the content you found.")
         .tool(Box::new(FileReadTool::new()))
         .build()

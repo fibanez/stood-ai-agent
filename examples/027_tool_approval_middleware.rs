@@ -370,7 +370,7 @@ Use it when the user asks for something to be typed slowly or dramatically."#;
         // Create agent with tools and middleware
         let agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.7)
             .max_tokens(4096)
             .system_prompt(system_prompt)

@@ -421,7 +421,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             let mut builder = Agent::builder()
                 .provider("lm_studio")
-                .model_str("google/gemma-3-12b")  // Local model via LM Studio
+                .model("google/gemma-3-12b")  // Local model via LM Studio
                 .system_prompt("You are a helpful assistant. Prepare a plan to provide an answer. If you can answer confidently, answer directly, but be succint. Don't explain your logic, just provide the user's answer.")
                 .with_streaming(streaming_enabled)
                 .tools(tools)
@@ -443,7 +443,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             let mut builder = Agent::builder()
                 .provider("lm_studio")
-                .model_str("google/gemma-3-27b")  // New 27B model via LM Studio
+                .model("google/gemma-3-27b")  // New 27B model via LM Studio
                 .system_prompt("You are a helpful assistant. Prepare a plan to provide an answer. If you can answer confidently, answer directly, but be succint. Don't explain your logic, just provide the user's answer.")
                 .with_streaming(streaming_enabled)
                 .tools(tools)
@@ -459,7 +459,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ModelConfig::BedrockClaudeHaiku => {
             let mut builder = Agent::builder()
                 .provider("bedrock")
-                .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")  // Claude Haiku 4.5 via AWS Bedrock
+                .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")  // Claude Haiku 4.5 via AWS Bedrock
                 .system_prompt("You are a helpful assistant. Prepare a plan to provide an answer. If you can answer confidently, answer directly, but be succint. Don't explain your logic, just provide the user's answer.")
                 .with_streaming(streaming_enabled)
                 .tools(tools)
@@ -474,7 +474,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ModelConfig::BedrockNovaLite => {
             let mut builder = Agent::builder()
                 .provider("bedrock")
-                .model_str("us.amazon.nova-lite-v1:0")  // Nova Lite via AWS Bedrock
+                .model("us.amazon.nova-lite-v1:0")  // Nova Lite via AWS Bedrock
                 .system_prompt("You are a helpful assistant. Prepare a plan to provide an answer. If you can answer confidently, answer directly, but be succint. Don't explain your logic, just provide the user's answer.")
                 .with_streaming(streaming_enabled)
                 .tools(tools)
@@ -489,7 +489,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ModelConfig::BedrockNovaMicro => {
             let mut builder = Agent::builder()
                 .provider("bedrock")
-                .model_str("us.amazon.nova-micro-v1:0")  // Nova Micro via AWS Bedrock
+                .model("us.amazon.nova-micro-v1:0")  // Nova Micro via AWS Bedrock
                 .system_prompt("You are a helpful assistant. Prepare a plan to provide an answer. If you can answer confidently, answer directly, but be succint. Don't explain your logic, just provide the user's answer.")
                 .with_streaming(streaming_enabled)
                 .tools(tools)

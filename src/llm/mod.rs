@@ -15,7 +15,7 @@
 //!     // Use AWS Bedrock (cloud)
 //!     let mut bedrock_agent = Agent::builder()
 //!         .provider("bedrock")
-//!         .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+//!         .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
 //!         .build().await?;
 //!
 //!     // Same API for all providers

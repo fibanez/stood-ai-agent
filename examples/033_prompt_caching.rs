@@ -84,7 +84,7 @@ Remember to be concise but thorough in your responses.
     // Create agent with system caching enabled
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(system_prompt)
         .with_prompt_caching(CacheStrategy::SystemOnly)
         .build()
@@ -117,7 +117,7 @@ async fn full_caching_with_tools() -> Result<(), Box<dyn std::error::Error>> {
     // Create agent with full caching (system + tools)
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-sonnet-4-5-20250929-v1:0")
+        .model("us.anthropic.claude-sonnet-4-5-20250929-v1:0")
         .system_prompt(system_prompt)
         .tool(Box::new(CalculatorTool::new()))
         .with_prompt_caching(CacheStrategy::SystemAndTools)
@@ -153,7 +153,7 @@ Focus on accuracy and brevity. Do not include unnecessary explanations.
 
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(system_prompt)
         .with_system_caching() // Convenience method
         .build()

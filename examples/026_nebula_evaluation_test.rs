@@ -214,7 +214,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut agent = Agent::builder()
         .name("Nebula Operations Commander")
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are the Nebula Operations Commander, an advanced AI managing a fleet of \
              exploration vessels. You coordinate missions, analyze data, and ensure crew safety. \

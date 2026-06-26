@@ -35,7 +35,7 @@ impl VerificationTest for LMStudioHealthTest {
             // Test health check by creating an agent (this verifies provider works)
             let agent_result = Agent::builder()
                 .provider("lm_studio")
-                .model_str("google/gemma-3-12b")
+                .model("google/gemma-3-12b")
                 .system_prompt("Test")
                 .build()
                 .await;
@@ -197,7 +197,7 @@ impl VerificationTest for LMStudioDirectChatTest {
             // Create agent with LM Studio model
             let mut agent = Agent::builder()
                 .provider("lm_studio")
-                .model_str("google/gemma-3-12b")
+                .model("google/gemma-3-12b")
                 .system_prompt("You are a helpful assistant. Keep responses brief.")
                 .temperature(0.0)
                 .max_tokens(50)
@@ -272,7 +272,7 @@ impl VerificationTest for LMStudioAgentTest {
             // Create agent with LM Studio model
             let mut agent = Agent::builder()
                 .provider("lm_studio")
-                .model_str("google/gemma-3-12b")
+                .model("google/gemma-3-12b")
                 .system_prompt("You are a helpful assistant. Keep responses very brief.")
                 .temperature(0.0)
                 .max_tokens(100)
@@ -365,7 +365,7 @@ impl VerificationTest for LMStudioGemma27BTest {
             // Create agent with Gemma 3 27B model
             let mut agent = Agent::builder()
                 .provider("lm_studio")
-                .model_str("google/gemma-3-27b")
+                .model("google/gemma-3-27b")
                 .system_prompt("You are a helpful assistant. Keep responses brief.")
                 .temperature(0.0)
                 .max_tokens(100)

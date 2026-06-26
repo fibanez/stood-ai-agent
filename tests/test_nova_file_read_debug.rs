@@ -42,7 +42,7 @@ async fn test_nova_file_read_debug() -> Result<(), Box<dyn std::error::Error>> {
     // Create agent with Nova
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-lite-v1:0")
+        .model("us.amazon.nova-lite-v1:0")
         .system_prompt(
             "You are a helpful assistant. When asked to read a file, use the file_read tool.",
         )
@@ -132,7 +132,7 @@ async fn test_claude_file_read_control() -> Result<(), Box<dyn std::error::Error
     // Create agent with Claude
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are a helpful assistant. When asked to read a file, use the file_read tool.",
         )

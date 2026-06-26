@@ -2646,7 +2646,7 @@ impl VerificationRunner {
             "google/gemma-3-27b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2654,7 +2654,7 @@ impl VerificationRunner {
             "google/gemma-3-12b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2662,7 +2662,7 @@ impl VerificationRunner {
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2707,7 +2707,7 @@ impl VerificationRunner {
             "google/gemma-3-27b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2715,7 +2715,7 @@ impl VerificationRunner {
             "google/gemma-3-12b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2723,7 +2723,7 @@ impl VerificationRunner {
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2784,7 +2784,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await
@@ -2822,7 +2822,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await
@@ -2928,7 +2928,7 @@ impl VerificationRunner {
             "google/gemma-3-27b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .temperature(0.1)
                     .max_tokens(50)
                     .system_prompt("Respond with exactly one word: 'test'")
@@ -2938,7 +2938,7 @@ impl VerificationRunner {
             "google/gemma-3-12b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .temperature(0.1)
                     .max_tokens(50)
                     .system_prompt("Respond with exactly one word: 'test'")
@@ -2948,7 +2948,7 @@ impl VerificationRunner {
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .temperature(0.1)
                     .max_tokens(50)
                     .system_prompt("Respond with exactly one word: 'test'")
@@ -3053,7 +3053,7 @@ impl VerificationRunner {
         // Test temperature and max_tokens configuration
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.1)
             .max_tokens(50)
             .system_prompt("Respond with exactly one word: 'test'")
@@ -3188,14 +3188,14 @@ impl VerificationRunner {
         // Test valid temperature boundaries
         let _agent1 = Agent::builder()
             .provider("lm_studio")
-            .model_str("google/gemma-3-12b")
+            .model("google/gemma-3-12b")
             .temperature(0.0) // Min valid
             .build()
             .await?;
 
         let _agent2 = Agent::builder()
             .provider("lm_studio")
-            .model_str("google/gemma-3-12b")
+            .model("google/gemma-3-12b")
             .temperature(1.0) // Max valid
             .build()
             .await?;
@@ -3203,7 +3203,7 @@ impl VerificationRunner {
         // Test valid max_tokens
         let _agent3 = Agent::builder()
             .provider("lm_studio")
-            .model_str("google/gemma-3-12b")
+            .model("google/gemma-3-12b")
             .max_tokens(1) // Min valid
             .build()
             .await?;
@@ -3225,7 +3225,7 @@ impl VerificationRunner {
             "google/gemma-3-27b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful math assistant.")
                     .temperature(0.5)
                     .max_tokens(100)
@@ -3236,7 +3236,7 @@ impl VerificationRunner {
             "google/gemma-3-12b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful math assistant.")
                     .temperature(0.5)
                     .max_tokens(100)
@@ -3247,7 +3247,7 @@ impl VerificationRunner {
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful math assistant.")
                     .temperature(0.5)
                     .max_tokens(100)
@@ -3301,13 +3301,13 @@ impl VerificationRunner {
         // Test minimal builder - only required field is model
         let mut agent = match model_name {
             "google/gemma-3-27b" => Agent::builder().provider("lm_studio")
-.model_str("google/gemma-3-27b").build().await?,
+.model("google/gemma-3-27b").build().await?,
             "google/gemma-3-12b" => Agent::builder().provider("lm_studio")
-.model_str("google/gemma-3-12b").build().await?,
+.model("google/gemma-3-12b").build().await?,
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .build()
                     .await?
             }
@@ -3397,7 +3397,7 @@ impl VerificationRunner {
             "google/gemma-3-27b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
                     .tool(Box::new(CalculatorTool::new()))
                     .build()
@@ -3406,7 +3406,7 @@ impl VerificationRunner {
             "google/gemma-3-12b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
                     .tool(Box::new(CalculatorTool::new()))
                     .build()
@@ -3415,7 +3415,7 @@ impl VerificationRunner {
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
                     .tool(Box::new(CalculatorTool::new()))
                     .build()
@@ -3659,7 +3659,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -3861,7 +3861,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-micro-v1:0")
+            .model("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -3906,7 +3906,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-micro-v1:0")
+            .model("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4067,7 +4067,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-micro-v1:0")
+            .model("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -4117,7 +4117,7 @@ impl VerificationRunner {
         // Test Nova file reading via Agent with streaming (this will test tool streaming)
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-micro-v1:0")
+            .model("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. When asked to read a file, use the file_read tool and then summarize the content you found.")
             .tool(Box::new(FileReadTool::new()))
             .build()
@@ -4278,7 +4278,7 @@ impl VerificationRunner {
             "google/gemma-3-27b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Keep responses brief.")
                     .with_streaming(true)
                     .build()
@@ -4287,7 +4287,7 @@ impl VerificationRunner {
             "google/gemma-3-12b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Keep responses brief.")
                     .with_streaming(true)
                     .build()
@@ -4296,7 +4296,7 @@ impl VerificationRunner {
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Keep responses brief.")
                     .with_streaming(true)
                     .build()
@@ -4347,7 +4347,7 @@ impl VerificationRunner {
             "google/gemma-3-27b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -4357,7 +4357,7 @@ impl VerificationRunner {
             "google/gemma-3-12b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -4367,7 +4367,7 @@ impl VerificationRunner {
             "tessa-rust-t1-7b" => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -4428,7 +4428,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. Keep responses brief.")
             .with_streaming(true)
             .build()
@@ -4471,7 +4471,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -4527,7 +4527,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-micro-v1:0")
+            .model("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. Keep responses brief.")
             .with_streaming(true)
             .build()
@@ -4570,7 +4570,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-micro-v1:0")
+            .model("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -4634,7 +4634,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-premier-v1:0")
+            .model("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4666,7 +4666,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-premier-v1:0")
+            .model("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4773,7 +4773,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-premier-v1:0")
+            .model("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant. Use tools when appropriate.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -4816,7 +4816,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-premier-v1:0")
+            .model("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant.")
             .with_streaming(true)
             .build()
@@ -4841,7 +4841,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-premier-v1:0")
+            .model("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant with tools.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -4874,7 +4874,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-lite-v1:0")
+            .model("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4906,7 +4906,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-lite-v1:0")
+            .model("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5012,7 +5012,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-lite-v1:0")
+            .model("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant. Use tools when appropriate.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -5052,7 +5052,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-lite-v1:0")
+            .model("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant.")
             .with_streaming(true)
             .build()
@@ -5077,7 +5077,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-lite-v1:0")
+            .model("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant with tools.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -5110,7 +5110,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-pro-v1:0")
+            .model("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5142,7 +5142,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-pro-v1:0")
+            .model("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5248,7 +5248,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-pro-v1:0")
+            .model("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant. Use tools when appropriate.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -5288,7 +5288,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-pro-v1:0")
+            .model("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant.")
             .with_streaming(true)
             .build()
@@ -5313,7 +5313,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.amazon.nova-2-pro-v1:0")
+            .model("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant with tools.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -5345,7 +5345,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5354,7 +5354,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5363,7 +5363,7 @@ impl VerificationRunner {
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5372,7 +5372,7 @@ impl VerificationRunner {
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+                    .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5381,7 +5381,7 @@ impl VerificationRunner {
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.amazon.nova-micro-v1:0")
+                    .model("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5443,7 +5443,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5452,7 +5452,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5461,7 +5461,7 @@ impl VerificationRunner {
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5470,7 +5470,7 @@ impl VerificationRunner {
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+                    .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5479,7 +5479,7 @@ impl VerificationRunner {
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.amazon.nova-micro-v1:0")
+                    .model("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5542,7 +5542,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5552,7 +5552,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5562,7 +5562,7 @@ impl VerificationRunner {
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5572,7 +5572,7 @@ impl VerificationRunner {
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+                    .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5582,7 +5582,7 @@ impl VerificationRunner {
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.amazon.nova-micro-v1:0")
+                    .model("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5651,7 +5651,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5660,7 +5660,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5669,7 +5669,7 @@ impl VerificationRunner {
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5678,7 +5678,7 @@ impl VerificationRunner {
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+                    .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5687,7 +5687,7 @@ impl VerificationRunner {
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.amazon.nova-micro-v1:0")
+                    .model("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5703,7 +5703,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-27b")
+                    .model("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5712,7 +5712,7 @@ impl VerificationRunner {
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("google/gemma-3-12b")
+                    .model("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5721,7 +5721,7 @@ impl VerificationRunner {
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
                     .provider("lm_studio")
-                    .model_str("tessa-rust-t1-7b")
+                    .model("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5730,7 +5730,7 @@ impl VerificationRunner {
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+                    .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5739,7 +5739,7 @@ impl VerificationRunner {
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
                     .provider("bedrock")
-                    .model_str("us.amazon.nova-micro-v1:0")
+                    .model("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5796,7 +5796,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5823,7 +5823,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5854,7 +5854,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .build()
             .await?;
 
@@ -5908,7 +5908,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .build()
             .await?;
 
@@ -5930,7 +5930,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -5953,7 +5953,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .system_prompt("When asked to calculate something, use the calculator tool.")
             .build()
@@ -5982,7 +5982,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(FileReadTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6010,7 +6010,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .tool(test_tool())
             .build()
             .await?;
@@ -6033,7 +6033,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6055,7 +6055,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .with_streaming(true)
             .build()
             .await?;
@@ -6081,7 +6081,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-2407-v1:0")
+            .model("mistral.mistral-large-2407-v1:0")
             .with_streaming(true)
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
@@ -6111,7 +6111,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -6138,7 +6138,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -6169,7 +6169,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .build()
             .await?;
 
@@ -6223,7 +6223,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .build()
             .await?;
 
@@ -6245,7 +6245,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6268,7 +6268,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .system_prompt("When asked to calculate something, use the calculator tool.")
             .build()
@@ -6297,7 +6297,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(FileReadTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6325,7 +6325,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .tool(test_tool())
             .build()
             .await?;
@@ -6348,7 +6348,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6370,7 +6370,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .with_streaming(true)
             .build()
             .await?;
@@ -6396,7 +6396,7 @@ impl VerificationRunner {
 
         let mut agent = Agent::builder()
             .provider("bedrock")
-            .model_str("mistral.mistral-large-3-675b-instruct")
+            .model("mistral.mistral-large-3-675b-instruct")
             .with_streaming(true)
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()

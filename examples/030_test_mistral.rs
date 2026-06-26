@@ -10,7 +10,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Creating agent with Mistral Large 2...");
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("mistral.mistral-large-2407-v1:0")
+        .model("mistral.mistral-large-2407-v1:0")
         .build()
         .await?;
 

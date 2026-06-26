@@ -19,7 +19,7 @@ async fn debug_in_test_env() {
     let result = tokio::time::timeout(Duration::from_secs(10), async {
         let mut agent = Agent::builder()
             .provider("lm_studio")
-            .model_str("google/gemma-3-12b")
+            .model("google/gemma-3-12b")
             .system_prompt("You are a helpful assistant.")
             .temperature(0.0)
             .max_tokens(50)

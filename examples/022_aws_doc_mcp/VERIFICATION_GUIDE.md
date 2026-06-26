@@ -33,7 +33,7 @@ verify_mcp_tools(&mut mcp_client).await?;
 ```rust
 // One line to add MCP tools to agent
 let mut agent = Agent::builder()
-    .provider("bedrock").model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+    .provider("bedrock").model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
     .system_prompt("You are an AWS expert...")
     .with_mcp_client(mcp_client, Some("aws_docs_".to_string())).await?  // NEW!
     .build().await?;

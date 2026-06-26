@@ -28,7 +28,7 @@ impl AgenticChat {
         // Create agent with Claude Haiku 4.5 (default model) and built-in tools
         let agent = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+            .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.7)
             .max_tokens(4096)
             .system_prompt(system_prompt)

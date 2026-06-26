@@ -10,7 +10,7 @@ use crate::llm::traits::{LlmModel, ModelCapabilities, ProviderType};
 /// A model identified at runtime by a plain string.
 ///
 /// Use this (or the [`crate::agent::AgentBuilder::provider`] /
-/// [`crate::agent::AgentBuilder::model_str`] builder methods) when you want
+/// [`crate::agent::AgentBuilder::model`] builder methods) when you want
 /// to target a model that is not listed in any compile-time registry.
 ///
 /// # Example
@@ -20,7 +20,7 @@ use crate::llm::traits::{LlmModel, ModelCapabilities, ProviderType};
 /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
 /// let agent = Agent::builder()
 ///     .provider("bedrock")
-///     .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+///     .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
 ///     .build()
 ///     .await?;
 /// # Ok(())

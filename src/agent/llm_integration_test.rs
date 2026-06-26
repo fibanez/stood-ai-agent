@@ -24,7 +24,7 @@ mod tests {
         // Test agent builder accepts the new API
         let _builder = Agent::builder()
             .provider("bedrock")
-            .model_str("us.anthropic.claude-sonnet-4-5-20250929-v1:0")
+            .model("us.anthropic.claude-sonnet-4-5-20250929-v1:0")
             .temperature(0.7)
             .max_tokens(1000);
 
@@ -37,7 +37,7 @@ mod tests {
         // Test that we can use LM Studio models
         let _builder = Agent::builder()
             .provider("lm_studio")
-            .model_str("google/gemma-3-12b")
+            .model("google/gemma-3-12b")
             .temperature(0.5)
             .max_tokens(2000);
 

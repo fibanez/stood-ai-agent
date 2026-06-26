@@ -63,7 +63,7 @@ impl VerificationTest for StreamingTokenCountingTest {
             };
             let mut agent = Agent::builder()
                 .provider(provider_str)
-                .model_str(config.model_id.clone())
+                .model(config.model_id.clone())
                 .system_prompt("You are a helpful assistant. Respond concisely.")
                 .with_streaming(true)
                 .build()
@@ -260,7 +260,7 @@ impl VerificationTest for NonStreamingTokenCountingTest {
             };
             let mut agent = Agent::builder()
                 .provider(provider_str)
-                .model_str(config.model_id.clone())
+                .model(config.model_id.clone())
                 .system_prompt("You are a helpful assistant. Respond concisely.")
                 .with_streaming(false)
                 .build()
@@ -459,7 +459,7 @@ impl VerificationTest for StreamingTokenCountingWithToolsTest {
             };
             let mut agent = Agent::builder()
                 .provider(provider_str)
-                .model_str(config.model_id.clone())
+                .model(config.model_id.clone())
                 .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                 .tool(Box::new(CalculatorTool))
                 .with_streaming(true)
@@ -632,7 +632,7 @@ impl VerificationTest for TokenCountingConsistencyTest {
             };
             let mut streaming_agent = Agent::builder()
                 .provider(provider_str)
-                .model_str(config.model_id.clone())
+                .model(config.model_id.clone())
                 .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                 .with_streaming(true)
                 .build()
@@ -640,7 +640,7 @@ impl VerificationTest for TokenCountingConsistencyTest {
 
             let mut non_streaming_agent = Agent::builder()
                 .provider(provider_str)
-                .model_str(config.model_id.clone())
+                .model(config.model_id.clone())
                 .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                 .with_streaming(false)
                 .build()

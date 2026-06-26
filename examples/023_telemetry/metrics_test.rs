@@ -146,7 +146,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create agent with all six tools using Nova Micro (AWS Bedrock)
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-micro-v1:0") // Nova Micro via AWS Bedrock - reliable tool calling
+        .model("us.amazon.nova-micro-v1:0") // Nova Micro via AWS Bedrock - reliable tool calling
         .with_streaming(false) // Disable streaming for troubleshooting
         .with_metrics()
         .tool(check_weather())

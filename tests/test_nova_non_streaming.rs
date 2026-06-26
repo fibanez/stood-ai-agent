@@ -50,7 +50,7 @@ async fn test_nova_non_streaming() -> Result<(), Box<dyn std::error::Error>> {
     // Create agent with Nova Lite - DISABLE STREAMING
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-lite-v1:0")
+        .model("us.amazon.nova-lite-v1:0")
         .system_prompt("You are a helpful assistant.")
         .with_streaming(false) // DISABLE STREAMING
         .tools(tools)

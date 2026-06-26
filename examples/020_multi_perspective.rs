@@ -201,7 +201,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create agent with multi-perspective evaluation
     let mut business_agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are a comprehensive business strategy consultant. Your role is to \
             create detailed business plans and strategies by conducting thorough \

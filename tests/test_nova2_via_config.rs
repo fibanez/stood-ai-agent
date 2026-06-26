@@ -15,7 +15,7 @@ async fn test_nova2_pro_via_execute() -> Result<(), Box<dyn std::error::Error>> 
     // Build agent with Nova2Pro - this works fine
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-2-pro-v1:0")
+        .model("us.amazon.nova-2-pro-v1:0")
         .system_prompt("You are a helpful assistant.")
         .build()
         .await?;
@@ -62,7 +62,7 @@ async fn test_nova2_lite_via_execute() -> Result<(), Box<dyn std::error::Error>>
 
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.amazon.nova-2-lite-v1:0")
+        .model("us.amazon.nova-2-lite-v1:0")
         .system_prompt("You are a helpful assistant.")
         .build()
         .await?;

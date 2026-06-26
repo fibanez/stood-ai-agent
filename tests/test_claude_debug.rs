@@ -79,7 +79,7 @@ async fn test_claude_debug() -> Result<(), Box<dyn std::error::Error>> {
     // Create agent with Claude Haiku 4.5
     let mut agent = Agent::builder()
         .provider("bedrock")
-        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
+        .model("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant.")
         .with_streaming(true)
         .tools(tools)
