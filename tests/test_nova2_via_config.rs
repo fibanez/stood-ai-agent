@@ -2,7 +2,6 @@
 // This mirrors the actual execution path in agent.execute()
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 
 #[tokio::test]
 async fn test_nova2_pro_via_execute() -> Result<(), Box<dyn std::error::Error>> {
@@ -15,7 +14,8 @@ async fn test_nova2_pro_via_execute() -> Result<(), Box<dyn std::error::Error>> 
 
     // Build agent with Nova2Pro - this works fine
     let mut agent = Agent::builder()
-        .model(Bedrock::Nova2Pro)
+        .provider("bedrock")
+        .model_str("us.amazon.nova-2-pro-v1:0")
         .system_prompt("You are a helpful assistant.")
         .build()
         .await?;
@@ -61,7 +61,8 @@ async fn test_nova2_lite_via_execute() -> Result<(), Box<dyn std::error::Error>>
     println!("Building agent with Nova2Lite model...");
 
     let mut agent = Agent::builder()
-        .model(Bedrock::Nova2Lite)
+        .provider("bedrock")
+        .model_str("us.amazon.nova-2-lite-v1:0")
         .system_prompt("You are a helpful assistant.")
         .build()
         .await?;

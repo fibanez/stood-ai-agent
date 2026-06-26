@@ -60,6 +60,7 @@ async fn test_nova_direct_streaming_with_tools() -> Result<(), Box<dyn std::erro
         model_id: "us.amazon.nova-lite-v1:0".to_string(),
         provider: ProviderType::Bedrock,
         enable_thinking: false,
+        cache_strategy: stood::llm::traits::CacheStrategy::default(),
         additional_params: std::collections::HashMap::new(),
     };
 

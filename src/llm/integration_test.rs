@@ -2,8 +2,9 @@
 //!
 //! This test validates that the new LLM architecture works end-to-end with real providers.
 
+use crate::llm::string_model::StringModel;
 use crate::llm::traits::{LlmModel, LlmProvider, ProviderType};
-use crate::llm::{Bedrock, LMStudio, ProviderRegistry, PROVIDER_REGISTRY};
+use crate::llm::{ProviderRegistry, PROVIDER_REGISTRY};
 
 #[tokio::test]
 async fn test_new_provider_architecture_demo() {
@@ -11,19 +12,16 @@ async fn test_new_provider_architecture_demo() {
     // Models are pure metadata, providers own all logic
 
     // 1. Test model metadata system
-    let claude_model = Bedrock::ClaudeSonnet45;
+    let claude_model = StringModel::new("us.anthropic.claude-sonnet-4-5-20250929-v1:0", ProviderType::Bedrock);
     assert_eq!(claude_model.provider(), ProviderType::Bedrock);
     assert_eq!(
         claude_model.model_id(),
         "us.anthropic.claude-sonnet-4-5-20250929-v1:0"
     );
-    assert_eq!(claude_model.context_window(), 200_000);
-    assert_eq!(claude_model.max_output_tokens(), 8_192);
 
-    let gemma_model = LMStudio::Gemma3_12B;
+    let gemma_model = StringModel::new("google/gemma-3-12b", ProviderType::LmStudio);
     assert_eq!(gemma_model.provider(), ProviderType::LmStudio);
     assert_eq!(gemma_model.model_id(), "google/gemma-3-12b");
-    assert_eq!(gemma_model.context_window(), 8_192);
 
     // 2. Test provider registry configuration (auto-detection from environment)
     ProviderRegistry::configure()
@@ -99,7 +97,7 @@ async fn test_new_provider_architecture_demo() {
     println!("   - ✅ Model metadata system working");
     println!("   - ✅ Provider registry lazy loading working");
     println!("   - ✅ Provider creation and capabilities working");
-    println!("   - ✅ Single API pattern: Bedrock::ClaudeSonnet45 works");
+    println!("   - ✅ String API pattern: provider/model_str works");
     println!("   - ✅ Type safety: Can't mix providers and models");
 }
 
@@ -108,20 +106,15 @@ async fn test_model_type_safety() {
     // This test demonstrates type safety in the new architecture
 
     // These work - correct provider/model combinations
-    let claude = Bedrock::ClaudeSonnet45;
-    let nova = Bedrock::NovaLite;
-    let gemma = LMStudio::Gemma3_12B;
+    let claude = StringModel::new("us.anthropic.claude-sonnet-4-5-20250929-v1:0", ProviderType::Bedrock);
+    let nova = StringModel::new("us.amazon.nova-lite-v1:0", ProviderType::Bedrock);
+    let gemma = StringModel::new("google/gemma-3-12b", ProviderType::LmStudio);
 
     assert_eq!(claude.provider(), ProviderType::Bedrock);
     assert_eq!(nova.provider(), ProviderType::Bedrock);
     assert_eq!(gemma.provider(), ProviderType::LmStudio);
 
-    // The type system prevents mixing providers and models at compile time
-    // This would not compile:
-    // let invalid = LMStudio::Claude35Sonnet; // ❌ Compile error!
-    // let invalid = Bedrock::Gemma3_12B;       // ❌ Compile error!
-
-    println!("✅ Type safety validation passed - can't mix providers and models");
+    println!("✅ Provider type validation passed");
 }
 
 #[tokio::test]

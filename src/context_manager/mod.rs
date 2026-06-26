@@ -445,6 +445,7 @@ mod tests {
                     "I don't have access to real-time weather data.",
                 ),
             ],
+            system_prompt: None,
         }
     }
 
@@ -522,7 +523,7 @@ mod tests {
     #[test]
     fn test_content_breakdown() {
         let manager = ContextManager::new();
-        let mut messages = Messages { messages: vec![] };
+        let mut messages = Messages { messages: vec![], system_prompt: None };
 
         // Add message with tool use
         messages.messages.push(Message {
@@ -596,7 +597,7 @@ mod tests {
         let manager = ContextManager::with_config(config);
 
         // Create messages that exceed the limit
-        let mut messages = Messages { messages: vec![] };
+        let mut messages = Messages { messages: vec![], system_prompt: None };
         for i in 0..10 {
             messages.messages.push(create_test_message(
                 MessageRole::User,

@@ -6,13 +6,13 @@
 #[cfg(test)]
 mod tests {
     use crate::agent::Agent;
-    use crate::llm::models::Bedrock;
-    use crate::llm::traits::LlmModel;
+    use crate::llm::string_model::StringModel;
+    use crate::llm::traits::{LlmModel, ProviderType};
 
     #[tokio::test]
     async fn test_agent_builder_new_api() {
         // Test that we can create an agent using the new LLM API
-        let model = Bedrock::ClaudeSonnet45;
+        let model = StringModel::new("us.anthropic.claude-sonnet-4-5-20250929-v1:0", ProviderType::Bedrock);
 
         // Verify model metadata is correct
         assert_eq!(
@@ -20,12 +20,11 @@ mod tests {
             "us.anthropic.claude-sonnet-4-5-20250929-v1:0"
         );
         assert_eq!(model.provider(), crate::llm::traits::ProviderType::Bedrock);
-        assert_eq!(model.context_window(), 200_000);
-        assert_eq!(model.max_output_tokens(), 8_192);
 
         // Test agent builder accepts the new API
         let _builder = Agent::builder()
-            .model(Bedrock::ClaudeSonnet45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-sonnet-4-5-20250929-v1:0")
             .temperature(0.7)
             .max_tokens(1000);
 
@@ -37,7 +36,8 @@ mod tests {
     async fn test_agent_builder_lm_studio() {
         // Test that we can use LM Studio models
         let _builder = Agent::builder()
-            .model(crate::llm::models::LMStudio::Gemma3_12B)
+            .provider("lm_studio")
+            .model_str("google/gemma-3-12b")
             .temperature(0.5)
             .max_tokens(2000);
 
@@ -48,10 +48,10 @@ mod tests {
     #[test]
     fn test_model_metadata() {
         // Test model metadata is correct for new Claude 4.5 models
-        let sonnet = Bedrock::ClaudeSonnet45;
-        let haiku = Bedrock::ClaudeHaiku45;
-        let opus = Bedrock::ClaudeOpus45;
-        let nova_lite = Bedrock::NovaLite;
+        let sonnet = StringModel::new("us.anthropic.claude-sonnet-4-5-20250929-v1:0", ProviderType::Bedrock);
+        let haiku = StringModel::new("us.anthropic.claude-haiku-4-5-20251001-v1:0", ProviderType::Bedrock);
+        let opus = StringModel::new("us.anthropic.claude-opus-4-5-20251101-v1:0", ProviderType::Bedrock);
+        let nova_lite = StringModel::new("us.amazon.nova-lite-v1:0", ProviderType::Bedrock);
 
         // Verify model IDs are correct
         assert_eq!(
@@ -71,33 +71,32 @@ mod tests {
 
     #[test]
     fn test_all_models_available() {
-        // Verify all new Claude 4.5 models are defined
-        let _bedrock_sonnet = Bedrock::ClaudeSonnet45;
-        let _bedrock_haiku = Bedrock::ClaudeHaiku45;
-        let _bedrock_opus = Bedrock::ClaudeOpus45;
-        let _bedrock_nova_lite = Bedrock::NovaLite;
-        let _bedrock_nova_pro = Bedrock::NovaPro;
-        let _bedrock_nova_micro = Bedrock::NovaMicro;
+        // Verify all new Claude 4.5 models can be created as StringModel
+        let _bedrock_sonnet = StringModel::new("us.anthropic.claude-sonnet-4-5-20250929-v1:0", ProviderType::Bedrock);
+        let _bedrock_haiku = StringModel::new("us.anthropic.claude-haiku-4-5-20251001-v1:0", ProviderType::Bedrock);
+        let _bedrock_opus = StringModel::new("us.anthropic.claude-opus-4-5-20251101-v1:0", ProviderType::Bedrock);
+        let _bedrock_nova_lite = StringModel::new("us.amazon.nova-lite-v1:0", ProviderType::Bedrock);
+        let _bedrock_nova_pro = StringModel::new("us.amazon.nova-pro-v1:0", ProviderType::Bedrock);
+        let _bedrock_nova_micro = StringModel::new("us.amazon.nova-micro-v1:0", ProviderType::Bedrock);
 
         // LM Studio models
-        let _lm_studio_gemma = crate::llm::models::LMStudio::Gemma3_12B;
-        let _lm_studio_llama = crate::llm::models::LMStudio::Llama3_70B;
-        let _lm_studio_mistral = crate::llm::models::LMStudio::Mistral7B;
+        let _lm_studio_gemma = StringModel::new("google/gemma-3-12b", ProviderType::LmStudio);
+        let _lm_studio_llama = StringModel::new("llama-3-70b", ProviderType::LmStudio);
+        let _lm_studio_mistral = StringModel::new("mistralai/mistral-7b-instruct-v0.3", ProviderType::LmStudio);
 
         // All models should be available
         assert!(true);
     }
 
     #[test]
-    #[allow(deprecated)]
-    fn test_legacy_models_still_available() {
-        // Verify legacy models still compile (for backward compatibility)
-        let _legacy_sonnet = Bedrock::Claude35Sonnet;
-        let _legacy_haiku = Bedrock::Claude35Haiku;
-        let _legacy_haiku3 = Bedrock::ClaudeHaiku3;
-        let _legacy_opus3 = Bedrock::ClaudeOpus3;
+    fn test_legacy_model_ids_still_work_as_strings() {
+        // Verify legacy model IDs still work with the string-based API
+        let _legacy_sonnet = StringModel::new("us.anthropic.claude-3-5-sonnet-20241022-v2:0", ProviderType::Bedrock);
+        let _legacy_haiku = StringModel::new("us.anthropic.claude-3-5-haiku-20241022-v1:0", ProviderType::Bedrock);
+        let _legacy_haiku3 = StringModel::new("us.anthropic.claude-3-haiku-20240307-v1:0", ProviderType::Bedrock);
+        let _legacy_opus3 = StringModel::new("us.anthropic.claude-3-opus-20240229-v1:0", ProviderType::Bedrock);
 
-        // Legacy models should still be usable but will emit deprecation warnings
+        // All legacy model IDs should still be usable as strings
         assert!(true);
     }
 }

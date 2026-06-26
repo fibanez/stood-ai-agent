@@ -311,3 +311,8 @@ path = "examples/026_nebula_evaluation_test.rs"
 name = "027_tool_approval_middleware"
 path = "examples/027_tool_approval_middleware.rs"
 
+# String-based model selection
+[[example]]
+name = "string_model_select"
+path = "examples/string_model_select.rs"
+

@@ -17,7 +17,6 @@ use std::sync::Arc;
 use std::time::Instant;
 use tokio::sync::Semaphore;
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 
 /// Test filtering options for granular test selection
 #[derive(Debug, Clone)]
@@ -2642,26 +2641,28 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
 
         let mut agent = match model_name {
             "google/gemma-3-27b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
             }
             "google/gemma-3-12b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
             }
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2701,26 +2702,28 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
 
         let mut agent = match model_name {
             "google/gemma-3-27b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
             }
             "google/gemma-3-12b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
             }
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond briefly.")
                     .build()
                     .await?
@@ -2773,7 +2776,6 @@ impl VerificationRunner {
 
     async fn test_bedrock_haiku_basic_chat(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         // Check if AWS credentials are available
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -2781,7 +2783,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await
@@ -2811,7 +2814,6 @@ impl VerificationRunner {
 
     async fn test_bedrock_haiku_multi_turn(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         // Check if AWS credentials are available
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -2819,7 +2821,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await
@@ -2919,13 +2922,13 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
 
         // Test temperature configuration
         let mut agent = match model_name {
             "google/gemma-3-27b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .temperature(0.1)
                     .max_tokens(50)
                     .system_prompt("Respond with exactly one word: 'test'")
@@ -2934,7 +2937,8 @@ impl VerificationRunner {
             }
             "google/gemma-3-12b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .temperature(0.1)
                     .max_tokens(50)
                     .system_prompt("Respond with exactly one word: 'test'")
@@ -2943,7 +2947,8 @@ impl VerificationRunner {
             }
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .temperature(0.1)
                     .max_tokens(50)
                     .system_prompt("Respond with exactly one word: 'test'")
@@ -3040,7 +3045,6 @@ impl VerificationRunner {
 
     async fn test_bedrock_configuration(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("No AWS credentials found. Set AWS_ACCESS_KEY_ID or AWS_PROFILE".into());
@@ -3048,7 +3052,8 @@ impl VerificationRunner {
 
         // Test temperature and max_tokens configuration
         let mut agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.1)
             .max_tokens(50)
             .system_prompt("Respond with exactly one word: 'test'")
@@ -3179,24 +3184,26 @@ impl VerificationRunner {
 
         // For now, we just verify that valid configurations work
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
 
         // Test valid temperature boundaries
         let _agent1 = Agent::builder()
-            .model(LMStudio::Gemma3_12B)
+            .provider("lm_studio")
+            .model_str("google/gemma-3-12b")
             .temperature(0.0) // Min valid
             .build()
             .await?;
 
         let _agent2 = Agent::builder()
-            .model(LMStudio::Gemma3_12B)
+            .provider("lm_studio")
+            .model_str("google/gemma-3-12b")
             .temperature(1.0) // Max valid
             .build()
             .await?;
 
         // Test valid max_tokens
         let _agent3 = Agent::builder()
-            .model(LMStudio::Gemma3_12B)
+            .provider("lm_studio")
+            .model_str("google/gemma-3-12b")
             .max_tokens(1) // Min valid
             .build()
             .await?;
@@ -3211,14 +3218,14 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
         use stood::tools::builtin::CalculatorTool;
 
         // Test complete builder with all options
         let mut agent = match model_name {
             "google/gemma-3-27b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful math assistant.")
                     .temperature(0.5)
                     .max_tokens(100)
@@ -3228,7 +3235,8 @@ impl VerificationRunner {
             }
             "google/gemma-3-12b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful math assistant.")
                     .temperature(0.5)
                     .max_tokens(100)
@@ -3238,7 +3246,8 @@ impl VerificationRunner {
             }
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful math assistant.")
                     .temperature(0.5)
                     .max_tokens(100)
@@ -3288,15 +3297,17 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
 
         // Test minimal builder - only required field is model
         let mut agent = match model_name {
-            "google/gemma-3-27b" => Agent::builder().model(LMStudio::Gemma3_27B).build().await?,
-            "google/gemma-3-12b" => Agent::builder().model(LMStudio::Gemma3_12B).build().await?,
+            "google/gemma-3-27b" => Agent::builder().provider("lm_studio")
+.model_str("google/gemma-3-27b").build().await?,
+            "google/gemma-3-12b" => Agent::builder().provider("lm_studio")
+.model_str("google/gemma-3-12b").build().await?,
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .build()
                     .await?
             }
@@ -3380,13 +3391,13 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
         use stood::tools::builtin::CalculatorTool;
 
         let mut agent = match model_name {
             "google/gemma-3-27b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
                     .tool(Box::new(CalculatorTool::new()))
                     .build()
@@ -3394,7 +3405,8 @@ impl VerificationRunner {
             }
             "google/gemma-3-12b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
                     .tool(Box::new(CalculatorTool::new()))
                     .build()
@@ -3402,7 +3414,8 @@ impl VerificationRunner {
             }
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
                     .tool(Box::new(CalculatorTool::new()))
                     .build()
@@ -3642,11 +3655,11 @@ impl VerificationRunner {
         }
 
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         let mut agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -3837,7 +3850,6 @@ impl VerificationRunner {
 
     async fn test_nova_basic_chat(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         // Check if AWS credentials are available
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -3848,7 +3860,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaMicro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -3882,7 +3895,6 @@ impl VerificationRunner {
 
     async fn test_nova_multi_turn(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         // Check if AWS credentials are available
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -3893,7 +3905,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaMicro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -3966,10 +3979,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_capabilities(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::NovaMicro;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-micro-v1:0", stood::llm::traits::ProviderType::Bedrock);
         let capabilities = model.capabilities();
 
         if !capabilities.supports_tools {
@@ -3984,10 +3996,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_configuration(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::NovaMicro;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-micro-v1:0", stood::llm::traits::ProviderType::Bedrock);
 
         if model.model_id().is_empty() {
             return Err("Nova Micro model ID should not be empty".into());
@@ -4044,7 +4055,6 @@ impl VerificationRunner {
 
     async fn test_nova_tool_builtin_calculator(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         // Check if AWS credentials are available
@@ -4056,7 +4066,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaMicro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. When asked to calculate something, use the calculator tool.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -4087,7 +4098,6 @@ impl VerificationRunner {
     async fn test_nova_tool_builtin_file_read(&self) -> Result<(), Box<dyn std::error::Error>> {
         use std::fs;
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::FileReadTool;
 
         // Check if AWS credentials are available
@@ -4106,7 +4116,8 @@ impl VerificationRunner {
 
         // Test Nova file reading via Agent with streaming (this will test tool streaming)
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaMicro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. When asked to read a file, use the file_read tool and then summarize the content you found.")
             .tool(Box::new(FileReadTool::new()))
             .build()
@@ -4262,12 +4273,12 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
 
         let mut agent = match model_name {
             "google/gemma-3-27b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Keep responses brief.")
                     .with_streaming(true)
                     .build()
@@ -4275,7 +4286,8 @@ impl VerificationRunner {
             }
             "google/gemma-3-12b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Keep responses brief.")
                     .with_streaming(true)
                     .build()
@@ -4283,7 +4295,8 @@ impl VerificationRunner {
             }
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Keep responses brief.")
                     .with_streaming(true)
                     .build()
@@ -4328,13 +4341,13 @@ impl VerificationRunner {
         model_name: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::LMStudio;
         use stood::tools::builtin::CalculatorTool;
 
         let mut agent = match model_name {
             "google/gemma-3-27b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -4343,7 +4356,8 @@ impl VerificationRunner {
             }
             "google/gemma-3-12b" => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -4352,7 +4366,8 @@ impl VerificationRunner {
             }
             "tessa-rust-t1-7b" => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -4410,10 +4425,10 @@ impl VerificationRunner {
 
     async fn test_bedrock_basic_streaming(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         let mut agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant. Keep responses brief.")
             .with_streaming(true)
             .build()
@@ -4452,11 +4467,11 @@ impl VerificationRunner {
 
     async fn test_bedrock_streaming_with_tools(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         let mut agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -4509,10 +4524,10 @@ impl VerificationRunner {
 
     async fn test_nova_basic_streaming(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaMicro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant. Keep responses brief.")
             .with_streaming(true)
             .build()
@@ -4551,11 +4566,11 @@ impl VerificationRunner {
 
     async fn test_nova_streaming_with_tools(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaMicro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-micro-v1:0")
             .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -4612,14 +4627,14 @@ impl VerificationRunner {
 
     async fn test_nova_premier_basic_chat(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova Premier test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaPremier)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4644,14 +4659,14 @@ impl VerificationRunner {
 
     async fn test_nova_premier_multi_turn(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova Premier test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaPremier)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4688,10 +4703,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_premier_capabilities(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::NovaPremier;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-premier-v1:0", stood::llm::traits::ProviderType::Bedrock);
         let capabilities = model.capabilities();
 
         if !capabilities.supports_tools {
@@ -4708,10 +4722,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_premier_configuration(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::NovaPremier;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-premier-v1:0", stood::llm::traits::ProviderType::Bedrock);
         if model.model_id().is_empty() || model.context_window() == 0 {
             return Err("Nova Premier configuration invalid".into());
         }
@@ -4752,7 +4765,6 @@ impl VerificationRunner {
 
     async fn test_nova_premier_tool_builtin_calculator(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -4760,7 +4772,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaPremier)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant. Use tools when appropriate.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -4796,14 +4809,14 @@ impl VerificationRunner {
 
     async fn test_nova_premier_basic_streaming(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova Premier test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaPremier)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant.")
             .with_streaming(true)
             .build()
@@ -4820,7 +4833,6 @@ impl VerificationRunner {
 
     async fn test_nova_premier_streaming_with_tools(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -4828,7 +4840,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::NovaPremier)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-premier-v1:0")
             .system_prompt("You are a helpful assistant with tools.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -4854,14 +4867,14 @@ impl VerificationRunner {
 
     async fn test_nova_2_lite_basic_chat(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova 2 Lite test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Lite)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4886,14 +4899,14 @@ impl VerificationRunner {
 
     async fn test_nova_2_lite_multi_turn(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova 2 Lite test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Lite)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -4930,10 +4943,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_2_lite_capabilities(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::Nova2Lite;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-2-lite-v1:0", stood::llm::traits::ProviderType::Bedrock);
         let capabilities = model.capabilities();
 
         if !capabilities.supports_tools {
@@ -4950,10 +4962,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_2_lite_configuration(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::Nova2Lite;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-2-lite-v1:0", stood::llm::traits::ProviderType::Bedrock);
         if model.model_id().is_empty() || model.context_window() == 0 {
             return Err("Nova 2 Lite configuration invalid".into());
         }
@@ -4993,7 +5004,6 @@ impl VerificationRunner {
 
     async fn test_nova_2_lite_tool_builtin_calculator(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -5001,7 +5011,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Lite)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant. Use tools when appropriate.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -5034,14 +5045,14 @@ impl VerificationRunner {
 
     async fn test_nova_2_lite_basic_streaming(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova 2 Lite test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Lite)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant.")
             .with_streaming(true)
             .build()
@@ -5058,7 +5069,6 @@ impl VerificationRunner {
 
     async fn test_nova_2_lite_streaming_with_tools(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -5066,7 +5076,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Lite)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-lite-v1:0")
             .system_prompt("You are a helpful assistant with tools.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -5092,14 +5103,14 @@ impl VerificationRunner {
 
     async fn test_nova_2_pro_basic_chat(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova 2 Pro test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Pro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5124,14 +5135,14 @@ impl VerificationRunner {
 
     async fn test_nova_2_pro_multi_turn(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova 2 Pro test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Pro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5168,10 +5179,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_2_pro_capabilities(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::Nova2Pro;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-2-pro-v1:0", stood::llm::traits::ProviderType::Bedrock);
         let capabilities = model.capabilities();
 
         if !capabilities.supports_tools {
@@ -5188,10 +5198,9 @@ impl VerificationRunner {
     }
 
     async fn test_nova_2_pro_configuration(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::Nova2Pro;
+        let model = stood::llm::string_model::StringModel::new("us.amazon.nova-2-pro-v1:0", stood::llm::traits::ProviderType::Bedrock);
         if model.model_id().is_empty() || model.context_window() == 0 {
             return Err("Nova 2 Pro configuration invalid".into());
         }
@@ -5231,7 +5240,6 @@ impl VerificationRunner {
 
     async fn test_nova_2_pro_tool_builtin_calculator(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -5239,7 +5247,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Pro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant. Use tools when appropriate.")
             .tool(Box::new(CalculatorTool::new()))
             .build()
@@ -5272,14 +5281,14 @@ impl VerificationRunner {
 
     async fn test_nova_2_pro_basic_streaming(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Nova 2 Pro test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Pro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant.")
             .with_streaming(true)
             .build()
@@ -5296,7 +5305,6 @@ impl VerificationRunner {
 
     async fn test_nova_2_pro_streaming_with_tools(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -5304,7 +5312,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::Nova2Pro)
+            .provider("bedrock")
+            .model_str("us.amazon.nova-2-pro-v1:0")
             .system_prompt("You are a helpful assistant with tools.")
             .tool(Box::new(CalculatorTool::new()))
             .with_streaming(true)
@@ -5331,12 +5340,12 @@ impl VerificationRunner {
         model_id: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::{Bedrock, LMStudio};
 
         let mut agent = match (provider, model_id) {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5344,7 +5353,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5352,7 +5362,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5360,7 +5371,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::ClaudeHaiku45)
+                    .provider("bedrock")
+                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5368,7 +5380,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::NovaMicro)
+                    .provider("bedrock")
+                    .model_str("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(true)
                     .build()
@@ -5425,12 +5438,12 @@ impl VerificationRunner {
         model_id: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::{Bedrock, LMStudio};
 
         let mut agent = match (provider, model_id) {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5438,7 +5451,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5446,7 +5460,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5454,7 +5469,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::ClaudeHaiku45)
+                    .provider("bedrock")
+                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5462,7 +5478,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::NovaMicro)
+                    .provider("bedrock")
+                    .model_str("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Respond concisely.")
                     .with_streaming(false)
                     .build()
@@ -5519,13 +5536,13 @@ impl VerificationRunner {
         model_id: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::{Bedrock, LMStudio};
         use stood::tools::builtin::CalculatorTool;
 
         let mut agent = match (provider, model_id) {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5534,7 +5551,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5543,7 +5561,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5552,7 +5571,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::ClaudeHaiku45)
+                    .provider("bedrock")
+                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5561,7 +5581,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::NovaMicro)
+                    .provider("bedrock")
+                    .model_str("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
                     .tool(Box::new(CalculatorTool::new()))
                     .with_streaming(true)
@@ -5622,7 +5643,6 @@ impl VerificationRunner {
         model_id: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::{Bedrock, LMStudio};
 
         let test_prompt = "Count from 1 to 3, with each number on a separate line.";
 
@@ -5630,7 +5650,8 @@ impl VerificationRunner {
         let mut streaming_agent = match (provider, model_id) {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5638,7 +5659,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5646,7 +5668,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5654,7 +5677,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::ClaudeHaiku45)
+                    .provider("bedrock")
+                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5662,7 +5686,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::NovaMicro)
+                    .provider("bedrock")
+                    .model_str("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(true)
                     .build()
@@ -5677,7 +5702,8 @@ impl VerificationRunner {
         let mut non_streaming_agent = match (provider, model_id) {
             ("lm_studio", "google/gemma-3-27b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_27B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-27b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5685,7 +5711,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "google/gemma-3-12b") => {
                 Agent::builder()
-                    .model(LMStudio::Gemma3_12B)
+                    .provider("lm_studio")
+                    .model_str("google/gemma-3-12b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5693,7 +5720,8 @@ impl VerificationRunner {
             }
             ("lm_studio", "tessa-rust-t1-7b") => {
                 Agent::builder()
-                    .model(LMStudio::TessaRust7B)
+                    .provider("lm_studio")
+                    .model_str("tessa-rust-t1-7b")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5701,7 +5729,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.anthropic.claude-haiku-4-5-20241022-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::ClaudeHaiku45)
+                    .provider("bedrock")
+                    .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5709,7 +5738,8 @@ impl VerificationRunner {
             }
             ("bedrock", "us.amazon.nova-micro-v1:0") => {
                 Agent::builder()
-                    .model(Bedrock::NovaMicro)
+                    .provider("bedrock")
+                    .model_str("us.amazon.nova-micro-v1:0")
                     .system_prompt("You are a helpful assistant. Follow instructions exactly.")
                     .with_streaming(false)
                     .build()
@@ -5759,14 +5789,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_basic_chat(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 2 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5786,14 +5816,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_multi_turn(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 2 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -5817,14 +5847,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_health_check(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 2 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .build()
             .await?;
 
@@ -5837,10 +5867,9 @@ impl VerificationRunner {
     }
 
     async fn test_mistral_large_2_capabilities(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::MistralLarge2;
+        let model = stood::llm::string_model::StringModel::new("mistral.mistral-large-2407-v1:0", stood::llm::traits::ProviderType::Bedrock);
         let caps = model.capabilities();
 
         if !caps.supports_tools {
@@ -5855,10 +5884,9 @@ impl VerificationRunner {
     }
 
     async fn test_mistral_large_2_configuration(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::MistralLarge2;
+        let model = stood::llm::string_model::StringModel::new("mistral.mistral-large-2407-v1:0", stood::llm::traits::ProviderType::Bedrock);
 
         if model.model_id().is_empty() {
             return Err("Mistral Large 2 model ID should not be empty".into());
@@ -5873,14 +5901,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_provider_registry(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 2 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .build()
             .await?;
 
@@ -5894,7 +5922,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_tool_registry(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -5902,7 +5929,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -5917,7 +5945,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_tool_builtin_calculator(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -5925,7 +5952,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .system_prompt("When asked to calculate something, use the calculator tool.")
             .build()
@@ -5946,7 +5974,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_tool_builtin_file_read(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::FileReadTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -5954,7 +5981,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(FileReadTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -5969,7 +5997,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_tool_custom_macro(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tool;
 
         #[tool]
@@ -5982,7 +6009,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .tool(test_tool())
             .build()
             .await?;
@@ -5997,7 +6025,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_tool_parallel_execution(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -6005,7 +6032,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6020,14 +6048,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_basic_streaming(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 2 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .with_streaming(true)
             .build()
             .await?;
@@ -6045,7 +6073,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_2_streaming_with_tools(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -6053,7 +6080,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge2)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-2407-v1:0")
             .with_streaming(true)
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
@@ -6076,14 +6104,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_basic_chat(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 3 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -6103,14 +6131,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_multi_turn(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 3 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .system_prompt("You are a helpful assistant. Respond briefly.")
             .build()
             .await?;
@@ -6134,14 +6162,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_health_check(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 3 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .build()
             .await?;
 
@@ -6154,10 +6182,9 @@ impl VerificationRunner {
     }
 
     async fn test_mistral_large_3_capabilities(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::MistralLarge3;
+        let model = stood::llm::string_model::StringModel::new("mistral.mistral-large-3-675b-instruct", stood::llm::traits::ProviderType::Bedrock);
         let caps = model.capabilities();
 
         if !caps.supports_tools {
@@ -6172,10 +6199,9 @@ impl VerificationRunner {
     }
 
     async fn test_mistral_large_3_configuration(&self) -> Result<(), Box<dyn std::error::Error>> {
-        use stood::llm::models::Bedrock;
         use stood::llm::traits::LlmModel;
 
-        let model = Bedrock::MistralLarge3;
+        let model = stood::llm::string_model::StringModel::new("mistral.mistral-large-3-675b-instruct", stood::llm::traits::ProviderType::Bedrock);
 
         if model.model_id().is_empty() {
             return Err("Mistral Large 3 model ID should not be empty".into());
@@ -6190,14 +6216,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_provider_registry(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 3 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .build()
             .await?;
 
@@ -6211,7 +6237,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_tool_registry(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -6219,7 +6244,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6234,7 +6260,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_tool_builtin_calculator(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -6242,7 +6267,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .system_prompt("When asked to calculate something, use the calculator tool.")
             .build()
@@ -6263,7 +6289,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_tool_builtin_file_read(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::FileReadTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -6271,7 +6296,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(FileReadTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6286,7 +6312,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_tool_custom_macro(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tool;
 
         #[tool]
@@ -6299,7 +6324,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .tool(test_tool())
             .build()
             .await?;
@@ -6314,7 +6340,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_tool_parallel_execution(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -6322,7 +6347,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()
             .await?;
@@ -6337,14 +6363,14 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_basic_streaming(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
             return Err("Mistral Large 3 test requires AWS credentials".into());
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .with_streaming(true)
             .build()
             .await?;
@@ -6362,7 +6388,6 @@ impl VerificationRunner {
 
     async fn test_mistral_large_3_streaming_with_tools(&self) -> Result<(), Box<dyn std::error::Error>> {
         use stood::agent::Agent;
-        use stood::llm::models::Bedrock;
         use stood::tools::builtin::CalculatorTool;
 
         if std::env::var("AWS_ACCESS_KEY_ID").is_err() && std::env::var("AWS_PROFILE").is_err() {
@@ -6370,7 +6395,8 @@ impl VerificationRunner {
         }
 
         let mut agent = Agent::builder()
-            .model(Bedrock::MistralLarge3)
+            .provider("bedrock")
+            .model_str("mistral.mistral-large-3-675b-instruct")
             .with_streaming(true)
             .tool(Box::new(CalculatorTool::new()) as Box<dyn stood::tools::Tool>)
             .build()

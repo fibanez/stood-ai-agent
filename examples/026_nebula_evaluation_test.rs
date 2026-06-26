@@ -27,7 +27,6 @@
 //! - Or run: `./scripts/evaluate_agent.py --defaults` to run evaluations
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::telemetry::TelemetryConfig;
 use stood::tool;
 
@@ -214,7 +213,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut agent = Agent::builder()
         .name("Nebula Operations Commander")
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are the Nebula Operations Commander, an advanced AI managing a fleet of \
              exploration vessels. You coordinate missions, analyze data, and ensure crew safety. \

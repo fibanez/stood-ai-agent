@@ -26,6 +26,7 @@ async fn test_direct_nova_vs_claude() -> Result<(), Box<dyn std::error::Error>> 
     // Test simple message
     let messages = Messages {
         messages: vec![Message::user("What is 2+3?")],
+        system_prompt: None,
     };
 
     let config = ChatConfig {

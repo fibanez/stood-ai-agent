@@ -14,7 +14,7 @@
 //! async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!     // Telemetry disabled by default
 //!     let mut agent = Agent::builder()
-//!         .model(Bedrock::ClaudeHaiku45)
+//!         .provider("bedrock").model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
 //!         .build().await?;
 //!
 //!     let result = agent.execute("Hello, world!").await?;

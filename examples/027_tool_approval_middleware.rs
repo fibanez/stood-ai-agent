@@ -26,7 +26,6 @@ use std::sync::Arc;
 use std::time::{Duration, Instant};
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::tools::{
     AfterToolAction, Tool, ToolContext, ToolError, ToolMiddleware, ToolMiddlewareAction, ToolResult,
 };
@@ -370,7 +369,8 @@ Use it when the user asks for something to be typed slowly or dramatically."#;
 
         // Create agent with tools and middleware
         let agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.7)
             .max_tokens(4096)
             .system_prompt(system_prompt)

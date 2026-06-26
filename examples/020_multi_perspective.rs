@@ -13,7 +13,6 @@
 
 use stood::agent::callbacks::PrintingConfig;
 use stood::agent::evaluation::PerspectiveConfig;
-use stood::llm::models::Bedrock;
 use stood::{agent::Agent, tool};
 
 // Use wee_alloc as the global allocator for smaller binary size
@@ -201,7 +200,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create agent with multi-perspective evaluation
     let mut business_agent = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are a comprehensive business strategy consultant. Your role is to \
             create detailed business plans and strategies by conducting thorough \

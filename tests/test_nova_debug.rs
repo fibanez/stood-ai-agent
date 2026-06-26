@@ -2,7 +2,6 @@ use std::env;
 use stood::tools::builtin::CalculatorTool;
 use stood::{
     agent::{Agent, LogLevel},
-    llm::models::Bedrock,
     tool,
 };
 
@@ -79,7 +78,8 @@ async fn test_nova_debug() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create agent with Nova Lite
     let mut agent = Agent::builder()
-        .model(Bedrock::NovaLite)
+        .provider("bedrock")
+        .model_str("us.amazon.nova-lite-v1:0")
         .system_prompt("You are a helpful assistant.")
         .with_streaming(true)
         .tools(tools)

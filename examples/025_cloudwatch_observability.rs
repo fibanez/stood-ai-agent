@@ -51,7 +51,6 @@
 //! 4. How to view traces in CloudWatch Gen AI Observability dashboard
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::telemetry::TelemetryConfig;
 
 #[tokio::main]
@@ -120,7 +119,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Examples from spec: "Math Tutor", "Fiction Writer"
     let agent_result = Agent::builder()
         .name("Demo Agent") // Descriptive name for this agent's purpose
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt("You are a helpful assistant that provides concise answers.")
         .with_telemetry(telemetry_config)
         .build()

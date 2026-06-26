@@ -15,7 +15,6 @@
 //! - Quality assurance through professional chef review
 
 use stood::agent::callbacks::PrintingConfig;
-use stood::llm::models::Bedrock;
 use stood::{agent::Agent, tool};
 
 #[tool]
@@ -80,7 +79,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create the chef evaluator agent (specialized for culinary assessment)
     let chef_evaluator = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are a professional chef evaluating recipe completeness. \
             Assess if this recipe meets restaurant-quality standards for home cooks.\n\n\
@@ -105,7 +105,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create the main recipe developer agent with chef evaluation
     let mut recipe_agent = Agent::builder()
-        .model(Bedrock::ClaudeHaiku45)
+        .provider("bedrock")
+        .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
         .system_prompt(
             "You are a recipe developer creating detailed cooking instructions. \
             Use available tools to gather ingredient data, then apply your culinary \

@@ -727,7 +727,7 @@ mod tests {
         let manager = SlidingWindowManager::with_config(config);
 
         // Create messages that exceed token limits but not message limits
-        let mut messages = Messages { messages: vec![] };
+        let mut messages = Messages { messages: vec![], system_prompt: None };
         for i in 0..5 {
             messages.messages.push(create_test_message(
                 crate::types::MessageRole::User,

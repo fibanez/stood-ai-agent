@@ -13,7 +13,6 @@ use rustyline::error::ReadlineError;
 use rustyline::DefaultEditor;
 
 use stood::agent::Agent;
-use stood::llm::models::Bedrock;
 use stood::{Result, StoodError};
 
 /// Simple interactive chat application
@@ -28,7 +27,8 @@ impl AgenticChat {
 
         // Create agent with Claude Haiku 4.5 (default model) and built-in tools
         let agent = Agent::builder()
-            .model(Bedrock::ClaudeHaiku45)
+            .provider("bedrock")
+            .model_str("us.anthropic.claude-haiku-4-5-20251001-v1:0")
             .temperature(0.7)
             .max_tokens(4096)
             .system_prompt(system_prompt)

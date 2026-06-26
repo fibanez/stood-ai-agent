@@ -5,7 +5,6 @@
 
 use super::*;
 use crate::agent::Agent;
-use crate::llm::models::{Bedrock, LMStudio};
 use std::time::Instant;
 
 /// Detect if token counting used estimation based on token patterns
@@ -57,64 +56,18 @@ impl VerificationTest for StreamingTokenCountingTest {
 
         let result = async {
             // Create agent with streaming enabled based on provider and model
-            let mut agent = match (config.provider, config.model_id.as_str()) {
-                (ProviderType::Bedrock, "us.anthropic.claude-haiku-4-5-20251001-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::Bedrock, "us.amazon.nova-micro-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::NovaMicro)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-27b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-12b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "tessa-rust-t1-7b") => {
-                    Agent::builder()
-                        .model(LMStudio::TessaRust7B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, _) => {
-                    // Default to Gemma3_27B for unknown LM Studio models
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                _ => {
-                    return Err(format!(
-                        "Unsupported provider/model combination: {:?}/{}",
-                        config.provider, config.model_id
-                    )
-                    .into())
-                }
+            let provider_str = match config.provider {
+                ProviderType::Bedrock => "bedrock",
+                ProviderType::LmStudio => "lm_studio",
+                _ => return Err(format!("Unsupported provider: {:?}", config.provider).into()),
             };
+            let mut agent = Agent::builder()
+                .provider(provider_str)
+                .model_str(config.model_id.clone())
+                .system_prompt("You are a helpful assistant. Respond concisely.")
+                .with_streaming(true)
+                .build()
+                .await?;
 
             // Execute a simple request that should generate measurable tokens
             let response = agent
@@ -300,64 +253,18 @@ impl VerificationTest for NonStreamingTokenCountingTest {
 
         let result = async {
             // Create agent with streaming disabled based on provider and model
-            let mut agent = match (config.provider, config.model_id.as_str()) {
-                (ProviderType::Bedrock, "us.anthropic.claude-haiku-4-5-20251001-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::Bedrock, "us.amazon.nova-micro-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::NovaMicro)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-27b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-12b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "tessa-rust-t1-7b") => {
-                    Agent::builder()
-                        .model(LMStudio::TessaRust7B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, _) => {
-                    // Default to Gemma3_27B for unknown LM Studio models
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Respond concisely.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                _ => {
-                    return Err(format!(
-                        "Unsupported provider/model combination: {:?}/{}",
-                        config.provider, config.model_id
-                    )
-                    .into())
-                }
+            let provider_str = match config.provider {
+                ProviderType::Bedrock => "bedrock",
+                ProviderType::LmStudio => "lm_studio",
+                _ => return Err(format!("Unsupported provider: {:?}", config.provider).into()),
             };
+            let mut agent = Agent::builder()
+                .provider(provider_str)
+                .model_str(config.model_id.clone())
+                .system_prompt("You are a helpful assistant. Respond concisely.")
+                .with_streaming(false)
+                .build()
+                .await?;
 
             // Execute a simple request that should generate measurable tokens
             let response = agent
@@ -545,64 +452,19 @@ impl VerificationTest for StreamingTokenCountingWithToolsTest {
             use crate::tools::builtin::CalculatorTool;
 
             // Create agent with streaming and tools enabled
-            let mut agent = match (config.provider, config.model_id.as_str()) {
-                (ProviderType::Bedrock, "us.anthropic.claude-haiku-4-5-20251001-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
-                        .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
-                        .tool(Box::new(CalculatorTool))
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::Bedrock, "us.amazon.nova-micro-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::NovaMicro)
-                        .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
-                        .tool(Box::new(CalculatorTool))
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-27b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
-                        .tool(Box::new(CalculatorTool))
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-12b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
-                        .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
-                        .tool(Box::new(CalculatorTool))
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "tessa-rust-t1-7b") => {
-                    Agent::builder()
-                        .model(LMStudio::TessaRust7B)
-                        .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
-                        .tool(Box::new(CalculatorTool))
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, _) => {
-                    // Default to Gemma3_27B for unknown LM Studio models
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
-                        .tool(Box::new(CalculatorTool))
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                _ => return Err(format!("Unsupported provider/model combination: {:?}/{}", config.provider, config.model_id).into()),
+            let provider_str = match config.provider {
+                ProviderType::Bedrock => "bedrock",
+                ProviderType::LmStudio => "lm_studio",
+                _ => return Err(format!("Unsupported provider: {:?}", config.provider).into()),
             };
+            let mut agent = Agent::builder()
+                .provider(provider_str)
+                .model_str(config.model_id.clone())
+                .system_prompt("You are a helpful assistant with access to tools. Use the calculator tool for math problems.")
+                .tool(Box::new(CalculatorTool))
+                .with_streaming(true)
+                .build()
+                .await?;
 
             // Execute a request that should use tools and generate tokens
             let response = agent.execute("Calculate 15 * 23 using the calculator tool.").await?;
@@ -763,123 +625,26 @@ impl VerificationTest for TokenCountingConsistencyTest {
             let test_prompt = "Count from 1 to 3, with each number on a separate line.";
 
             // Create agents for both streaming and non-streaming modes
-            let mut streaming_agent = match (config.provider, config.model_id.as_str()) {
-                (ProviderType::Bedrock, "us.anthropic.claude-haiku-4-5-20251001-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::Bedrock, "us.amazon.nova-micro-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::NovaMicro)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-27b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-12b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "tessa-rust-t1-7b") => {
-                    Agent::builder()
-                        .model(LMStudio::TessaRust7B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, _) => {
-                    // Default to Gemma3_27B for unknown LM Studio models
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(true)
-                        .build()
-                        .await?
-                }
-                _ => {
-                    return Err(format!(
-                        "Unsupported provider/model combination: {:?}/{}",
-                        config.provider, config.model_id
-                    )
-                    .into())
-                }
+            let provider_str = match config.provider {
+                ProviderType::Bedrock => "bedrock",
+                ProviderType::LmStudio => "lm_studio",
+                _ => return Err(format!("Unsupported provider: {:?}", config.provider).into()),
             };
+            let mut streaming_agent = Agent::builder()
+                .provider(provider_str)
+                .model_str(config.model_id.clone())
+                .system_prompt("You are a helpful assistant. Follow instructions exactly.")
+                .with_streaming(true)
+                .build()
+                .await?;
 
-            let mut non_streaming_agent = match (config.provider, config.model_id.as_str()) {
-                (ProviderType::Bedrock, "us.anthropic.claude-haiku-4-5-20251001-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::ClaudeHaiku45)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::Bedrock, "us.amazon.nova-micro-v1:0") => {
-                    Agent::builder()
-                        .model(Bedrock::NovaMicro)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-27b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "google/gemma-3-12b") => {
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_12B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, "tessa-rust-t1-7b") => {
-                    Agent::builder()
-                        .model(LMStudio::TessaRust7B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                (ProviderType::LmStudio, _) => {
-                    // Default to Gemma3_27B for unknown LM Studio models
-                    Agent::builder()
-                        .model(LMStudio::Gemma3_27B)
-                        .system_prompt("You are a helpful assistant. Follow instructions exactly.")
-                        .with_streaming(false)
-                        .build()
-                        .await?
-                }
-                _ => {
-                    return Err(format!(
-                        "Unsupported provider/model combination: {:?}/{}",
-                        config.provider, config.model_id
-                    )
-                    .into())
-                }
-            };
+            let mut non_streaming_agent = Agent::builder()
+                .provider(provider_str)
+                .model_str(config.model_id.clone())
+                .system_prompt("You are a helpful assistant. Follow instructions exactly.")
+                .with_streaming(false)
+                .build()
+                .await?;
 
             // Execute the same prompt with both modes
             let streaming_response = streaming_agent.execute(test_prompt).await?;
