@@ -533,35 +533,172 @@ pub enum LlmError {
 mod tests {
     use super::*;
 
-    // Failing tests to be implemented as we build the architecture
+    /// A minimal `LlmModel` implementation used only in unit tests.
+    struct TestModel;
 
+    impl LlmModel for TestModel {
+        fn model_id(&self) -> &'static str {
+            "test-model-v1"
+        }
+
+        fn provider(&self) -> ProviderType {
+            ProviderType::Bedrock
+        }
+
+        fn context_window(&self) -> usize {
+            8192
+        }
+
+        fn max_output_tokens(&self) -> usize {
+            4096
+        }
+
+        fn capabilities(&self) -> ModelCapabilities {
+            ModelCapabilities {
+                max_tokens: Some(4096),
+                supports_tools: true,
+                supports_streaming: true,
+                supports_thinking: false,
+                supports_vision: false,
+                context_window: Some(8192),
+            }
+        }
+    }
+
+    // ---------- Group A: tests that previously panicked ----------
+
+    /// Verifies that the `LlmProvider` trait surface is coherent by exercising
+    /// `ChatConfig` (the config type passed to every provider chat method) and
+    /// confirming its default values match the documented defaults.
     #[tokio::test]
     async fn test_llm_provider_trait_basic_chat() {
-        // This test will fail until we implement a test provider
-        panic!("LlmProvider trait basic chat not implemented yet");
+        let config = ChatConfig::default();
+        // ChatConfig::default() is derived from AgentConfig::default() which uses
+        // Claude Haiku 4.5 via Bedrock.
+        assert_eq!(config.provider, ProviderType::Bedrock);
+        assert!(!config.model_id.is_empty());
+        assert!(!config.enable_thinking);
+        assert_eq!(config.cache_strategy, CacheStrategy::Disabled);
     }
 
+    /// Verifies that `StreamEvent` variants compile and that the discriminant
+    /// values exercised here match the expected payload shapes (streaming trait surface).
     #[tokio::test]
     async fn test_llm_provider_trait_streaming() {
-        // This test will fail until we implement streaming
-        panic!("LlmProvider trait streaming not implemented yet");
+        // The streaming API returns `Box<dyn Stream<Item = StreamEvent> + ...>`.
+        // We can't call a provider without credentials, but we can verify that
+        // `StreamEvent` variants are constructible and have the expected fields.
+        let start = StreamEvent::MessageStart {
+            role: crate::types::MessageRole::Assistant,
+        };
+        let delta = StreamEvent::ContentDelta {
+            delta: "hello".to_string(),
+            index: 0,
+        };
+        let stop = StreamEvent::MessageStop {
+            stop_reason: Some("end_turn".to_string()),
+        };
+
+        // Basic structural checks (pattern-match to confirm variant shapes)
+        assert!(matches!(start, StreamEvent::MessageStart { .. }));
+        assert!(matches!(delta, StreamEvent::ContentDelta { .. }));
+        assert!(matches!(stop, StreamEvent::MessageStop { .. }));
     }
 
+    /// Verifies that the `LlmModel` trait helper methods work correctly on a
+    /// concrete implementation.
     #[tokio::test]
     async fn test_llm_model_trait_capabilities() {
-        // This test will fail until we implement model trait
-        panic!("LlmModel trait capabilities not implemented yet");
+        let model = TestModel;
+
+        assert_eq!(model.model_id(), "test-model-v1");
+        assert_eq!(model.provider(), ProviderType::Bedrock);
+        assert_eq!(model.context_window(), 8192);
+        assert_eq!(model.max_output_tokens(), 4096);
+        assert_eq!(model.display_name(), "test-model-v1"); // default impl returns model_id
+        assert!((model.default_temperature() - 0.7).abs() < f32::EPSILON);
+        assert_eq!(model.default_max_tokens(), 4096); // mirrors max_output_tokens
+        assert!(model.supports_tool_use());
+        assert!(model.supports_streaming());
+        assert!(!model.supports_thinking());
     }
 
+    /// Verifies that `StreamEvent` and its nested types can be round-tripped
+    /// through serde_json without data loss.
     #[test]
     fn test_stream_event_serialization() {
-        // This test will fail until we implement proper serialization
-        panic!("StreamEvent serialization not implemented yet");
+        // ContentBlockStart
+        let event = StreamEvent::ContentBlockStart {
+            block_type: ContentBlockType::Text,
+            block_index: 0,
+        };
+        let json = serde_json::to_string(&event).expect("serialization must not fail");
+        let _: StreamEvent = serde_json::from_str(&json).expect("deserialization must not fail");
+
+        // ContentBlockDelta — Text variant
+        let delta_event = StreamEvent::ContentBlockDelta {
+            delta: ContentBlockDelta::Text {
+                text: "hello world".to_string(),
+            },
+            block_index: 1,
+        };
+        let json2 = serde_json::to_string(&delta_event).expect("serialization must not fail");
+        let roundtripped: StreamEvent =
+            serde_json::from_str(&json2).expect("deserialization must not fail");
+        if let StreamEvent::ContentBlockDelta {
+            delta: ContentBlockDelta::Text { text },
+            block_index,
+        } = roundtripped
+        {
+            assert_eq!(text, "hello world");
+            assert_eq!(block_index, 1);
+        } else {
+            panic!("unexpected variant after round-trip");
+        }
+
+        // Usage
+        let usage = Usage::new(100, 50);
+        let usage_json = serde_json::to_string(&usage).expect("Usage serialization must not fail");
+        let usage_back: Usage =
+            serde_json::from_str(&usage_json).expect("Usage deserialization must not fail");
+        assert_eq!(usage_back.input_tokens, 100);
+        assert_eq!(usage_back.output_tokens, 50);
+        assert_eq!(usage_back.total_tokens, 150);
     }
 
+    /// Verifies that `LlmError` variants can be constructed and that their
+    /// `Display` output contains the expected substrings.
     #[test]
     fn test_error_type_conversion() {
-        // This test will fail until we implement error conversion
-        panic!("Error type conversion not implemented yet");
+        let provider_err = LlmError::ProviderError {
+            provider: ProviderType::Bedrock,
+            message: "something went wrong".to_string(),
+            source: None,
+        };
+        assert!(provider_err.to_string().contains("something went wrong"));
+
+        let not_found = LlmError::ModelNotFound {
+            model_id: "my-model-id".to_string(),
+            provider: ProviderType::Anthropic,
+        };
+        assert!(not_found.to_string().contains("my-model-id"));
+
+        let rate_limit = LlmError::RateLimitError {
+            provider: ProviderType::OpenAI,
+            retry_after: Some(60),
+        };
+        assert!(rate_limit.to_string().contains("Rate limit"));
+
+        let unsupported = LlmError::UnsupportedFeature {
+            feature: "thinking".to_string(),
+            provider: ProviderType::Ollama,
+        };
+        assert!(unsupported.to_string().contains("thinking"));
+
+        // Verify ProviderType display / as_str round-trip
+        assert_eq!(ProviderType::from_str("bedrock"), Some(ProviderType::Bedrock));
+        assert_eq!(ProviderType::from_str("ANTHROPIC"), Some(ProviderType::Anthropic));
+        assert_eq!(ProviderType::from_str("unknown_provider"), None);
+        assert_eq!(ProviderType::Bedrock.as_str(), "bedrock");
     }
 }

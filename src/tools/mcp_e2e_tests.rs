@@ -364,6 +364,18 @@ mod tests {
 
     #[tokio::test]
     async fn test_mcp_tool_execution_through_registry() {
+        // This test requires a live MCP server connection.  The MCPAgentTool
+        // delegates execution to MCPClient::call_tool(), which needs an active
+        // session.  Skip when MCP_TEST_ENDPOINT is unset (the default for
+        // plain `cargo test --lib`).
+        if std::env::var("MCP_TEST_ENDPOINT").is_err() {
+            eprintln!(
+                "Skipping test_mcp_tool_execution_through_registry: \
+                 set MCP_TEST_ENDPOINT to run tests that require a live MCP server"
+            );
+            return;
+        }
+
         let (tool_registry, _mcp_registry) = create_test_tool_registry().await.unwrap();
 
         // Create a proper ToolUse for execution
