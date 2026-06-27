@@ -2322,6 +2322,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[ignore = "requires live LLM provider; run with: cargo test -- --ignored"]
     async fn test_agent_chat_functionality() {
         let mut agent = Agent::builder()
             .system_prompt("You are a helpful assistant. Keep responses brief.")
@@ -2361,6 +2362,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[ignore = "requires live LLM provider; run with: cargo test -- --ignored"]
     async fn test_agent_multi_turn_chat() {
         let mut agent = Agent::builder()
             .system_prompt("You are helpful. Keep responses very brief.")
